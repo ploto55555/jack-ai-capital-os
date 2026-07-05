@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jack AI Capital OS</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="terminal-shell">
+    <header class="topbar">
+      <div>JACK AI CAPITAL OS // PERSONAL TRADING TERMINAL</div>
+      <div>MODE: SIMULATION · DATA: MOCK · AUTO-TRADING: OFF</div>
+    </header>
+
+    <section class="decision-strip" aria-label="Decision summary">
+      <article class="decision-card primary"><span>DECISION</span><strong id="decisionAction">WAIT</strong></article>
+      <article class="decision-card"><span>MODE</span><strong id="decisionMode">DEFENSE</strong></article>
+      <article class="decision-card"><span>SYMBOL</span><strong id="decisionSymbol">GBPJPY</strong></article>
+      <article class="decision-card"><span>RISK</span><strong id="decisionRisk">4%</strong></article>
+      <article class="decision-card"><span>SCORE</span><strong id="decisionScore">18/20</strong></article>
+      <article class="decision-card danger"><span>WARNING</span><strong id="decisionWarning">NO CHASE</strong></article>
+    </section>
+
+    <section class="grid-main">
+      <aside class="stack left-stack">
+        <section class="panel">
+          <h2>ACCOUNT</h2>
+          <div class="kv"><span>Equity</span><b>$500</b></div>
+          <div class="kv"><span>Stage</span><b>0 → 2K</b></div>
+          <div class="kv"><span>Max DD</span><b>-25% pause</b></div>
+          <div class="kv"><span>Today</span><b>0R</b></div>
+          <div class="kv"><span>Goal</span><b>$1M path</b></div>
+        </section>
+
+        <section class="panel command-menu">
+          <h2>COMMAND MENU</h2>
+          <button data-command="scan gbpjpy">SCAN GBPJPY</button>
+          <button data-command="risk 500 4 50">RISK 500 4 50</button>
+          <button data-command="mistakes">MISTAKES</button>
+          <button data-command="rules">RULE QUEUE</button>
+          <button data-command="help">HELP</button>
+        </section>
+
+        <section class="panel watchlist">
+          <h2>WATCHLIST</h2>
+          <button data-symbol="GBPJPY">GBPJPY <span>18/20</span></button>
+          <button data-symbol="USDJPY">USDJPY <span>14/20</span></button>
+          <button data-symbol="XAUUSD">XAUUSD <span>13/20</span></button>
+          <button data-symbol="GBPUSD">GBPUSD <span>08/20</span></button>
+          <button data-symbol="EURUSD">EURUSD <span>10/20</span></button>
+        </section>
+      </aside>
+
+      <section class="panel output-panel">
+        <h2>COMMAND OUTPUT</h2>
+        <pre id="terminalOutput">BOOT SEQUENCE COMPLETE...
+
+SYSTEM PURPOSE:
+Personal AI Capital OS for discipline, risk, journaling and Abu-style setup review.
+
+CURRENT DEFAULT:
+SYMBOL: GBPJPY
+ACTION: WAIT
+REASON: Strong setup score, but current price is not at clean entry. Do not chase.
+
+TYPE COMMAND:
+scan gbpjpy
+risk 500 4 50
+mistakes
+rules
+help</pre>
+        <form class="terminal-input" id="commandForm">
+          <span>&gt;</span>
+          <input id="commandInput" autocomplete="off" placeholder="type command here..." />
+        </form>
+      </section>
+
+      <aside class="stack right-stack">
+        <section class="panel">
+          <h2>MARKET INTEL</h2>
+          <p>USD: mixed · JPY: weak · Gold: watching yields</p>
+          <p>High impact news: manual check required</p>
+          <p>Data layer: mock now, API later</p>
+        </section>
+
+        <section class="panel">
+          <h2>MISTAKE MEMORY</h2>
+          <ul>
+            <li>Do not enter mid-price.</li>
+            <li>Do not chase after breakout candle.</li>
+            <li>Small stop only when structure is clean.</li>
+            <li>No attack mode after emotional loss.</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h2>RISK LADDER</h2>
+          <div class="kv"><span>Normal</span><b>1–2%</b></div>
+          <div class="kv"><span>A+</span><b>3–4%</b></div>
+          <div class="kv"><span>S</span><b>5%</b></div>
+          <div class="kv"><span>DD -20%</span><b>0.25–0.5%</b></div>
+        </section>
+
+        <section class="panel">
+          <h2>RULE QUEUE</h2>
+          <p>AI may suggest rules later. User approval required.</p>
+          <button class="small" id="approveRule">APPROVE MOCK RULE</button>
+          <button class="small" id="rejectRule">REJECT</button>
+          <p id="ruleStatus">Status: waiting</p>
+        </section>
+      </aside>
+    </section>
+
+    <section class="bottom-grid">
+      <section class="panel">
+        <h2>JOURNAL FIELDS</h2>
+        <p>symbol · direction · entry · stop · target · R · emotion · mistake · lesson</p>
+      </section>
+      <section class="panel">
+        <h2>SNOWBALL LEARNING</h2>
+        <p>Every trade becomes data. More journal entries → better mistake memory → better decision quality.</p>
+      </section>
+      <section class="panel">
+        <h2>SETTINGS</h2>
+        <p>Auto-trading: OFF · AI: manual review · Database: localStorage first · Market API: later</p>
+      </section>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
