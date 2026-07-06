@@ -120,9 +120,14 @@ function loadLevelsPanel() {
   loadScriptOnce('levelsPanelLoader', 'levels-panel.js');
 }
 
+function loadPaperTradeLoop() {
+  loadScriptOnce('paperTradeLoader', 'paper-trade.js');
+}
+
 function enableAgentClient() {
   loadMultiChartPanel();
   loadLevelsPanel();
+  loadPaperTradeLoop();
   improveChatReadability();
 
   const form = document.getElementById('aiChatForm');
