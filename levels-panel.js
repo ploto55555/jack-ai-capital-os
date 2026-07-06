@@ -4,13 +4,14 @@ function injectLevelsStyle(){
     .levels-panel{max-height:240px!important;min-height:220px!important;overflow:hidden!important;padding-bottom:8px!important;}
     .levels-panel h3{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px!important;font-size:13px!important;}
     .levels-price{font-size:11.5px;color:#8b98a8;margin:2px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .levels-table{display:grid;grid-template-columns:34px 1fr 1fr 78px;gap:0;border:1px solid #1b2530;border-radius:8px;overflow:hidden;background:#070b10;}
-    .levels-head,.levels-cell{padding:5px 6px;border-bottom:1px solid #151d26;font-size:11px;line-height:1.2;white-space:nowrap;}
-    .levels-head{color:#8b98a8;background:#060a0f;font-weight:900;text-transform:uppercase;font-size:9.5px;letter-spacing:.04em;}
-    .levels-cell{color:#c9d1d9;font-weight:700;}
+    .levels-table{display:grid;grid-template-columns:34px 1.25fr 1.25fr 72px;gap:0;border:1px solid #1b2530;border-radius:8px;overflow:hidden;background:#070b10;}
+    .levels-head,.levels-cell{padding:5px 5px;border-bottom:1px solid #151d26;font-size:10.5px;line-height:1.2;white-space:nowrap;}
+    .levels-head{color:#8b98a8;background:#060a0f;font-weight:900;text-transform:uppercase;font-size:9px;letter-spacing:.04em;}
+    .levels-cell{color:#c9d1d9;font-weight:700;overflow:hidden;text-overflow:ellipsis;}
     .levels-table div:nth-last-child(-n+4){border-bottom:0;}
     .level-tf{color:#d7ecff;font-weight:900;}
-    .level-status{display:inline-flex;padding:2px 6px;border-radius:999px;font-size:9.5px;font-weight:900;letter-spacing:.02em;max-width:70px;overflow:hidden;text-overflow:ellipsis;}
+    .level-distance{color:#8b98a8;font-size:9.5px;font-weight:800;margin-left:3px;}
+    .level-status{display:inline-flex;padding:2px 6px;border-radius:999px;font-size:9.2px;font-weight:900;letter-spacing:.02em;max-width:66px;overflow:hidden;text-overflow:ellipsis;}
     .level-breakout{background:#0d2418;border:1px solid #2f6848;color:#7ff0ad;}
     .level-breakdown{background:#2b1014;border:1px solid #5a1c25;color:#ff8a94;}
     .level-near{background:#2c210f;border:1px solid #574018;color:#f0b35a;}
@@ -37,6 +38,28 @@ function fmtLevel(n){
   const x=Number(n);
   if(!Number.isFinite(x))return '-';
   return Math.abs(x)>=10 ? x.toFixed(2) : x.toFixed(4);
+}
+
+function pipSize(symbol){
+  const s=String(symbol||'').toUpperCase();
+  if(s.includes('JPY'))return 0.01;
+  if(s==='XAUUSD')return 1;
+  if(s==='DXY' || s==='US10Y')return 0.01;
+  return 0.0001;
+}
+
+function distanceLabel(symbol, price, level){
+  const p=Number(price), l=Number(level);
+  if(!Number.isFinite(p)||!Number.isFinite(l))return '';
+  const size=pipSize(symbol);
+  const dist=Math.abs(p-l)/size;
+  if(symbol==='XAUUSD')return `${dist.toFixed(1)}pt`;
+  if(symbol==='DXY' || symbol==='US10Y')return `${dist.toFixed(1)}`;
+  return `${dist.toFixed(1)}p`;
+}
+
+function levelWithDistance(symbol, price, level){
+  return `${fmtLevel(level)} <span class="level-distance">/ ${distanceLabel(symbol,price,level)}</span>`;
 }
 
 function shortStatus(status){
@@ -84,13 +107,14 @@ async function loadLevels(symbol){
   try{
     const r=await fetch('/api/levels?symbol='+encodeURIComponent(symbol));
     const data=await r.json();
-    price.textContent=`${data.symbol} · ${fmtLevel(data.price)} · ${data.source}`;
+    const livePrice=Number(data.price);
+    price.textContent=`${data.symbol} · ${fmtLevel(livePrice)} · ${data.source}`;
     const labels={H1:'1H',H4:'4H',W1:'1W',M1:'1M'};
     grid.innerHTML='<div class="levels-head">TF</div><div class="levels-head">Support</div><div class="levels-head">Resist</div><div class="levels-head">Status</div>';
     ['H1','H4','W1','M1'].forEach(tf=>{
       const l=data.levels?.[tf];
       if(!l)return;
-      grid.insertAdjacentHTML('beforeend',`<div class="levels-cell level-tf">${labels[tf]}</div><div class="levels-cell">${fmtLevel(l.support)}</div><div class="levels-cell">${fmtLevel(l.resistance)}</div><div class="levels-cell"><span class="level-status ${statusClass(l.status)}" title="${l.status}">${shortStatus(l.status)}</span></div>`);
+      grid.insertAdjacentHTML('beforeend',`<div class="levels-cell level-tf">${labels[tf]}</div><div class="levels-cell" title="Distance from price">${levelWithDistance(data.symbol,livePrice,l.support)}</div><div class="levels-cell" title="Distance from price">${levelWithDistance(data.symbol,livePrice,l.resistance)}</div><div class="levels-cell"><span class="level-status ${statusClass(l.status)}" title="${l.status}">${shortStatus(l.status)}</span></div>`);
     });
     note.textContent='ABU: '+abuLevelSummary(data);
   }catch(e){
