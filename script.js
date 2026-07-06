@@ -148,7 +148,51 @@ function renderJournal() {
   });
 }
 
+function setWorkflowOutput(text) {
+  const box = document.getElementById("workflowOutput");
+  if (box) box.innerHTML = text;
+}
+
+function runDailyScan() {
+  const text = "Daily scan complete. Best setups: GBPJPY 18/20 and AUDJPY 16/20. Watchlist: USDJPY and XAUUSD. Reject: GBPUSD and EURGBP. Macro filters: DXY and US10Y. Main rule today: wait for clean trigger, no chase.";
+  setWorkflowOutput(`<b>Daily Scan</b><br>${text}`);
+  autoJournal("DAILY SCAN", text);
+}
+
+function generateTradePlan() {
+  const setup = setups[currentSymbol] || setups.GBPJPY;
+  const text = setup.decision === "REJECT"
+    ? `${currentSymbol}: no trade plan. Reject because ${setup.warning}. Wait for new structure.`
+    : `${currentSymbol}: direction based on higher-timeframe structure. Entry only after clean pullback or compression break. Stop must be small and logical. Target minimum 3R, ideal 5R+. Invalid if structure breaks before trigger. Warning: ${setup.warning}.`;
+  document.getElementById("tradePlanText").textContent = text;
+  setWorkflowOutput(`<b>Trade Plan</b><br>${text}`);
+  autoJournal("TRADE PLAN", text);
+}
+
+function workflowRiskCheck() {
+  calculateRisk();
+  const text = `${currentSymbol}: risk calculation completed. This does not mean trade now. Risk is allowed only if entry trigger and stop location are clean.`;
+  setWorkflowOutput(`<b>Risk Check</b><br>${text}`);
+  autoJournal("WORKFLOW RISK CHECK", text);
+}
+
+function saveFinalDecision() {
+  const decision = document.getElementById("finalDecision")?.value || "WAIT";
+  const setup = setups[currentSymbol] || setups.GBPJPY;
+  const text = `${currentSymbol}: final decision = ${decision}. Score ${setup.score}. Warning ${setup.warning}. Reason: ${setup.reason}`;
+  setWorkflowOutput(`<b>Final Decision Saved</b><br>${text}`);
+  autoJournal("FINAL DECISION", text);
+}
+
+function runWorkflow(action) {
+  if (action === "scan") return runDailyScan();
+  if (action === "plan") return generateTradePlan();
+  if (action === "risk") return workflowRiskCheck();
+  if (action === "decision") return saveFinalDecision();
+}
+
 document.querySelectorAll(".tile[data-symbol]").forEach(tile => tile.addEventListener("click", () => selectSymbol(tile.dataset.symbol)));
+document.querySelectorAll("[data-workflow]").forEach(button => button.addEventListener("click", () => runWorkflow(button.dataset.workflow)));
 
 const chatForm = document.getElementById("aiChatForm");
 const chatInput = document.getElementById("aiChatInput");
