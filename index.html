@@ -95,46 +95,21 @@
 
           <section class="panel ai-chat-panel">
             <h3>Ask Jack AI</h3>
-            <div class="chat-box" id="chatBox">
-              <div class="msg ai">Ask me about selected symbol, risk, setup quality, or why the system says wait. Mock AI is running today.</div>
-            </div>
-            <form class="ai-chat-form" id="aiChatForm">
-              <input id="aiChatInput" autocomplete="off" placeholder="Ask AI: why wait, risk size, trade plan..." />
-              <button type="submit">Ask</button>
-            </form>
+            <div class="chat-box" id="chatBox"><div class="msg ai">Ask me about selected symbol, risk, setup quality, or why the system says wait. Mock AI is running today.</div></div>
+            <form class="ai-chat-form" id="aiChatForm"><input id="aiChatInput" autocomplete="off" placeholder="Ask AI: why wait, risk size, trade plan..." /><button type="submit">Ask</button></form>
           </section>
 
           <section class="panel workflow-panel">
             <h3>Daily Workflow</h3>
-            <div class="workflow-buttons">
-              <button data-workflow="scan">1 Run Daily Scan</button>
-              <button data-workflow="plan">2 Generate Trade Plan</button>
-              <button data-workflow="risk">3 Risk Check</button>
-              <button data-workflow="decision">4 Save Final Decision</button>
-            </div>
-            <select id="finalDecision">
-              <option>WAIT</option>
-              <option>WATCH</option>
-              <option>TRADE PLAN READY</option>
-              <option>REJECT</option>
-              <option>NO TRADE TODAY</option>
-            </select>
+            <div class="workflow-buttons"><button data-workflow="scan">1 Run Daily Scan</button><button data-workflow="plan">2 Generate Trade Plan</button><button data-workflow="risk">3 Risk Check</button><button data-workflow="decision">4 Save Final Decision</button></div>
+            <select id="finalDecision"><option>WAIT</option><option>WATCH</option><option>TRADE PLAN READY</option><option>REJECT</option><option>NO TRADE TODAY</option></select>
             <div class="workflow-output" id="workflowOutput">Daily workflow ready. Start from Run Daily Scan.</div>
           </section>
         </aside>
       </section>
 
       <section class="bottom-grid">
-        <section class="panel">
-          <h3>Risk Calculator</h3>
-          <form class="calc-form" id="riskForm">
-            <input id="equityInput" type="number" value="500" min="1" placeholder="Equity" />
-            <input id="riskInput" type="number" value="4" min="0" step="0.1" placeholder="Risk %" />
-            <input id="stopInput" type="number" value="50" min="1" placeholder="Stop pips" />
-            <button type="submit">Calc</button>
-          </form>
-          <div class="calc-result" id="riskResult">Risk amount: $20.00 · Approx pip value: $0.40 · 5R target: $100.00</div>
-        </section>
+        <section class="panel"><h3>Risk Calculator</h3><form class="calc-form" id="riskForm"><input id="equityInput" type="number" value="500" min="1" placeholder="Equity" /><input id="riskInput" type="number" value="4" min="0" step="0.1" placeholder="Risk %" /><input id="stopInput" type="number" value="50" min="1" placeholder="Stop pips" /><button type="submit">Calc</button></form><div class="calc-result" id="riskResult">Risk amount: $20.00 · Approx pip value: $0.40 · 5R target: $100.00</div></section>
         <section class="panel trade-plan"><h3>Trade Plan</h3><b id="planTitle">GBPJPY Plan:</b> <span id="tradePlanText">Wait for pullback / compression break. Entry only if small stop is possible.</span></section>
         <section class="panel journal-panel"><h3>Journal / Snowball</h3><form class="journal-form" id="journalForm"><input id="journalInput" autocomplete="off" placeholder="Save note: setup, emotion, mistake, lesson..." /><button type="submit">Save</button></form><div class="journal-list" id="journalList"></div></section>
       </section>
@@ -142,6 +117,9 @@
   </div>
 
   <script src="https://s3.tradingview.com/tv.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=52"></script>
+  <script src="agent-client.js?v=52"></script>
+  <script src="runner-status.js?v=52"></script>
+  <script src="research-room.js?v=52"></script>
 </body>
 </html>
