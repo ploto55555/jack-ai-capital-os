@@ -1,7 +1,7 @@
 :root{
-  --bg:#0b0f14;
-  --panel:#11161d;
-  --panel2:#0d131a;
+  --bg:#000000;
+  --panel:#0b0f14;
+  --panel2:#070b10;
   --text:#c9d1d9;
   --text2:#9fb0c3;
   --dim:#6b7785;
@@ -15,11 +15,11 @@
 }
 
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text)}
+html,body{margin:0;min-height:100%;background:#000;color:var(--text)}
 body{font-family:"Inter","Segoe UI","Roboto","Helvetica Neue",Arial,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 button,input{font:inherit}
 
-.terminal-shell{width:100vw;height:100vh;padding:10px;background:radial-gradient(circle at top right,rgba(108,182,255,.06),transparent 28%),radial-gradient(circle at bottom left,rgba(34,197,94,.03),transparent 25%),var(--bg);text-shadow:none}
+.terminal-shell{width:100vw;height:100vh;padding:10px;background:#000;text-shadow:none}
 
 .topbar{height:38px;border:1px solid var(--line);background:var(--panel2);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:13px;color:var(--text2);border-radius:6px}
 
@@ -35,7 +35,7 @@ button,input{font:inherit}
 .left-stack{grid-template-rows:.85fr 1.15fr 1.1fr}
 .right-stack{grid-template-rows:.95fr 1.2fr .95fr 1.05fr}
 
-.panel{border:1px solid var(--line);background:linear-gradient(180deg,#11161d 0%,#0f141a 100%);padding:12px;min-height:0;overflow:hidden;border-radius:8px;box-shadow:0 1px 0 rgba(255,255,255,.02) inset,0 8px 24px rgba(0,0,0,.18)}
+.panel{border:1px solid var(--line);background:linear-gradient(180deg,#0b0f14 0%,#080c11 100%);padding:12px;min-height:0;overflow:hidden;border-radius:8px;box-shadow:0 1px 0 rgba(255,255,255,.02) inset,0 8px 24px rgba(0,0,0,.22)}
 .panel h2{margin:0 0 10px;font-size:12px;letter-spacing:.08em;color:var(--text2);border-bottom:1px solid var(--line);padding-bottom:8px;text-transform:uppercase;font-weight:600}
 .panel p,.panel li,.kv,.watchlist button,.command-menu button,.small{font-size:13px;line-height:1.5}
 .kv{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(255,255,255,.04);padding:6px 0}
@@ -43,8 +43,8 @@ button,input{font:inherit}
 .kv b{color:var(--white);font-weight:600}
 
 .command-menu,.watchlist{display:flex;flex-direction:column}
-.command-menu button,.watchlist button,.small{width:100%;border:1px solid var(--line);background:#0c1117;color:var(--text);padding:8px 10px;margin-bottom:6px;text-align:left;cursor:pointer;border-radius:6px;transition:.18s ease}
-.command-menu button:hover,.watchlist button:hover,.small:hover{border-color:#36506b;background:#131a22;color:var(--white)}
+.command-menu button,.watchlist button,.small{width:100%;border:1px solid var(--line);background:#070b10;color:var(--text);padding:8px 10px;margin-bottom:6px;text-align:left;cursor:pointer;border-radius:6px;transition:.18s ease}
+.command-menu button:hover,.watchlist button:hover,.small:hover{border-color:#36506b;background:#111820;color:var(--white)}
 .watchlist button{display:flex;justify-content:space-between;align-items:center}
 .watchlist span{color:var(--amber);font-weight:600}
 .small{font-size:12px;text-align:center}
