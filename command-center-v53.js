@@ -1,5 +1,5 @@
 (function(){
-  const VERSION = 'V5.3 Command Center';
+  const VERSION = 'V5.3.1 Command Center Clean Layout';
   const STORE_KEY = 'jackCommandWatchlist';
   const priceCache = {};
 
@@ -10,17 +10,17 @@
   function normalizedDecision(sym){
     const s = setups[sym] || {};
     const raw = String(s.decision || '').toUpperCase();
-    if(isMacro(sym)) return 'MACRO FILTER';
+    if(isMacro(sym)) return 'MACRO';
     if(raw === 'PAPER') return 'PAPER TEST';
-    if(raw === 'STRONG') return 'MACRO FILTER';
+    if(raw === 'STRONG') return 'MACRO';
     if(raw === 'NEUTRAL') return 'WAIT';
     if(raw === 'NO TRADE TODAY') return 'NO TRADE';
     return raw || 'WAIT';
   }
   function normalizedBadge(sym){
     const s = setups[sym] || {};
-    if(isMacro(sym)) return 'Macro Filter';
-    if(String(s.badge || '').toUpperCase() === 'PAPER') return 'Paper Test';
+    if(isMacro(sym)) return 'Macro';
+    if(String(s.badge || '').toUpperCase() === 'PAPER') return 'Paper';
     if(String(s.badge || '').toUpperCase() === 'NEUTRAL') return 'Wait';
     return s.badge || 'Watch';
   }
@@ -55,14 +55,14 @@
     const n = Number(value);
     if(!Number.isFinite(n)) return setups[sym]?.price || '-';
     if(sym === 'US10Y') return n.toFixed(2) + '%';
-    if(sym.includes('JPY') || sym === 'XAUUSD' || sym === 'DXY') return n.toFixed(3).replace(/\.000$/,'');
+    if(sym.includes('JPY')) return n.toFixed(3);
+    if(sym === 'XAUUSD') return n.toFixed(1);
+    if(sym === 'DXY') return n.toFixed(2);
     return n.toFixed(5);
   }
-  function shortReason(sym){
-    const s = setups[sym] || {};
-    const core = s.core || '';
-    const warning = s.warning || '';
-    return `${core} · ${warning}`;
+  function shortText(text, max){
+    const s = String(text || '');
+    return s.length > max ? s.slice(0, max - 1) + '…' : s;
   }
   function sortAndRenderTiles(){
     if(!hasSetups()) return;
@@ -76,9 +76,8 @@
       const tile = document.createElement('article');
       tile.className = `tile ${classFor(sym)} ${sym === active ? 'selected' : ''}`;
       tile.dataset.symbol = sym;
-      tile.dataset.scan = `${s.marketType || ''} · ${s.core || ''}`;
       tile.title = `${s.marketType || ''}\n${s.core || ''}\n${s.quality || ''}\n${s.reason || ''}`;
-      tile.innerHTML = `<div class="tile-top"><div><div class="symbol">${sym}</div><div class="grade">${normalizedBadge(sym)}</div></div><div class="score">${s.score || '-'}</div></div><div class="live-price" data-price-symbol="${sym}">${fmtPrice(sym, priceCache[sym] ?? s.price)}</div><div class="action"><b>${normalizedDecision(sym)}</b><span>${s.warning || ''}</span></div>`;
+      tile.innerHTML = `<div class="tile-line1"><span class="symbol">${sym}</span><span class="score">${s.score || '-'}</span></div><div class="grade">${normalizedBadge(sym)}</div><div class="live-price" data-price-symbol="${sym}">${fmtPrice(sym, priceCache[sym] ?? s.price)}</div><div class="tile-line2"><b>${normalizedDecision(sym)}</b><span>${shortText(s.warning || '', 10)}</span></div>`;
       tile.addEventListener('click', () => window.selectSymbol ? window.selectSymbol(sym) : null);
       heatmap.appendChild(tile);
     });
@@ -102,7 +101,7 @@
         const data = await r.json();
         if(data && Number.isFinite(Number(data.price))) window.updatePairLivePrice(sym, data.price, data);
       }catch{}
-      await new Promise(res => setTimeout(res, 180));
+      await new Promise(res => setTimeout(res, 150));
     }
   }
   function updateFxStrength(){
@@ -119,26 +118,18 @@
       }
     });
     const sorted = Object.entries(points).sort((a,b)=>b[1]-a[1]);
-    const strong = sorted.slice(0,3).map(x=>x[0]).join(' / ') || '-';
-    const weak = sorted.slice(-3).reverse().map(x=>x[0]).join(' / ') || '-';
+    const strong = sorted.slice(0,3).map(x=>x[0]).join('/') || '-';
+    const weak = sorted.slice(-3).reverse().map(x=>x[0]).join('/') || '-';
     let el = document.getElementById('fxStrengthBar');
     const topLeft = document.querySelector('.topbar > div:first-child');
-    if(!el && topLeft){
-      el = document.createElement('span');
-      el.id = 'fxStrengthBar';
-      topLeft.appendChild(el);
-    }
-    if(el) el.innerHTML = ` <span class="fx-label">FX STRENGTH</span> Strong: <b>${strong}</b> · Weak: <b>${weak}</b>`;
+    if(!el && topLeft){ el = document.createElement('span'); el.id = 'fxStrengthBar'; topLeft.appendChild(el); }
+    if(el) el.innerHTML = ` <span class="fx-label">FX</span> S:<b>${strong}</b> W:<b>${weak}</b>`;
   }
   function setupHeader(){
     const topRight = document.querySelector('.topbar > div:last-child');
-    if(topRight){
-      topRight.innerHTML = `Chart: <b>TradingView</b> · AI: <b>GPT</b> · Journal: <b>Auto</b> · Auto-trade: <b>OFF</b> <button id="watchlistBtn" class="watchlist-btn">Watchlist</button>`;
-    }
+    if(topRight){ topRight.innerHTML = `Chart:<b>TradingView</b> · AI:<b>GPT</b> · Auto:<b>OFF</b> <button id="watchlistBtn" class="watchlist-btn">Watchlist</button>`; }
     const topLeft = document.querySelector('.topbar > div:first-child');
-    if(topLeft && !document.getElementById('fxStrengthBar')){
-      topLeft.innerHTML = `<b>JACK AI CAPITAL OS</b> // V5.3 Command Center`;
-    }
+    if(topLeft && !document.getElementById('fxStrengthBar')) topLeft.innerHTML = `<b>JACK AI CAPITAL OS</b> // V5.3`;
   }
   function setupWatchlistPanel(){
     if(document.getElementById('watchlistPanel')) return;
@@ -168,31 +159,20 @@
     const s = setups[sym] || setups.GBPJPY || {};
     const decision = normalizedDecision(sym);
     const price = fmtPrice(sym, priceCache[sym] ?? s.price);
-    if(isMacro(sym)){
-      return `【Macro Filter】\n${sym} 当前价格：${price}\n用途：这是宏观过滤，不是主要实盘 entry。\n影响：用来检查 USD / Gold / JPY 风险。\n动作：只作为方向背景，不能单独下单。`;
-    }
-    return `【Daily AI Brief】\n${sym} 当前价格：${price}\nAction：${decision}\n原因：${s.reason || '等待更清楚结构。'}\n关键：${s.core || '等边缘和小止损。'}\n风险：${s.warning || 'No chase'}\n下一步：等 key zone / H4-H1 结构 / M15-M5 objective stop，再做 paper 或 trade plan。`;
+    if(isMacro(sym)) return `【Macro Filter】\n${sym} 当前价格：${price}\n用途：宏观过滤，不是主要 entry。\n动作：只作为 USD / Gold / JPY 背景。`;
+    return `【Daily AI Brief】\n${sym} 价格：${price}\nAction：${decision}\n原因：${s.reason || '等待更清楚结构。'}\n关键：${s.core || '等边缘和小止损。'}\n风险：${s.warning || 'No chase'}\n下一步：等 key zone / H4-H1 结构 / M15-M5 objective stop。`;
   }
   function updateDailyBrief(sym){
     const panel = document.querySelector('.ai-chat-panel');
-    if(panel){
-      const h = panel.querySelector('h3'); if(h) h.textContent = 'JACK AI DAILY BRIEF';
-    }
+    if(panel){ const h = panel.querySelector('h3'); if(h) h.textContent = 'JACK AI DAILY BRIEF'; }
     const box = document.getElementById('chatBox');
-    if(box){
-      const first = box.querySelector('.msg.ai');
-      if(first){ first.textContent = briefText(sym); first.classList.add('daily-brief-msg'); }
-    }
+    if(box){ const first = box.querySelector('.msg.ai'); if(first){ first.textContent = briefText(sym); first.classList.add('daily-brief-msg'); } }
     const input = document.getElementById('aiChatInput');
     if(input) input.placeholder = `问 Jack AI：${sym} 现在是不是追价？`;
   }
   function paperSummary(){
-    try{
-      const items = JSON.parse(localStorage.getItem('paperTradeMemory') || '[]');
-      const open = items.filter(x => x.status === 'PAPER OPEN').length;
-      const closed = items.filter(x => x.status === 'PAPER CLOSED').length;
-      return `Open ${open} · Closed ${closed}`;
-    }catch{return 'Paper data waiting';}
+    try{ const items = JSON.parse(localStorage.getItem('paperTradeMemory') || '[]'); const open = items.filter(x => x.status === 'PAPER OPEN').length; const closed = items.filter(x => x.status === 'PAPER CLOSED').length; return `Open ${open} · Closed ${closed}`; }
+    catch{return 'Paper waiting';}
   }
   function ensureTodayAction(){
     const rightColumn = document.querySelector('.left');
@@ -209,7 +189,7 @@
     if(!panel || !hasSetups()) return;
     const s = setups[sym] || setups.GBPJPY;
     const d = normalizedDecision(sym);
-    const allowed = d === 'WATCH' ? 'Watch + wait trigger' : d === 'PAPER TEST' ? 'Paper only' : d === 'WAIT' ? 'Wait only' : d === 'TRADE PLAN READY' ? 'Plan allowed' : 'No trade';
+    const allowed = d === 'WATCH' ? 'Wait trigger' : d === 'PAPER TEST' ? 'Paper only' : d === 'WAIT' ? 'Wait only' : d === 'TRADE PLAN READY' ? 'Plan allowed' : 'No trade';
     panel.innerHTML = `<h3>TODAY ACTION</h3><div class="today-symbol"><b>${sym}</b><span>${fmtPrice(sym, priceCache[sym] ?? s.price)}</span></div><div class="kv"><span>Action</span><b>${d}</b></div><div class="kv"><span>Allowed</span><b>${allowed}</b></div><div class="kv"><span>Forbidden</span><b>No chase</b></div><div class="kv"><span>Paper</span><b>${paperSummary()}</b></div>`;
   }
   function updateSelectedPanel(sym){
@@ -221,12 +201,14 @@
   function injectStyle(){
     const style = document.createElement('style');
     style.textContent = `
-      .terminal-shell{grid-template-rows:38px 118px 1fr 160px!important;}
-      .topbar{gap:12px!important;}
-      #fxStrengthBar{margin-left:14px;color:#8b98a8;font-size:12px;font-weight:700;}
+      .terminal-shell{grid-template-rows:38px 96px 1fr 150px!important;gap:7px!important;}
+      .topbar{gap:10px!important;font-size:12px!important;overflow:hidden!important;}
+      .topbar>div:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .topbar>div:last-child{white-space:nowrap;flex-shrink:0;}
+      #fxStrengthBar{margin-left:10px;color:#8b98a8;font-size:11px;font-weight:800;}
       #fxStrengthBar b{color:#f2f6fb!important;}
-      .fx-label{color:#6cb6ff;font-size:10px;letter-spacing:.08em;margin-right:5px;}
-      .watchlist-btn{margin-left:8px;background:#122033;border:1px solid #36506b;color:#d7ecff;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:900;cursor:pointer;}
+      .fx-label{color:#6cb6ff;font-size:10px;letter-spacing:.08em;margin-right:4px;}
+      .watchlist-btn{margin-left:6px;background:#122033;border:1px solid #36506b;color:#d7ecff;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:900;cursor:pointer;}
       .watchlist-panel{position:fixed;right:18px;top:54px;width:260px;z-index:9999;border:1px solid #263442;background:#070b10;border-radius:10px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.55);}
       .watchlist-panel.hidden{display:none;}
       .wl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;color:#f2f6fb;}
@@ -235,30 +217,35 @@
       .wl-checks{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;}
       .wl-checks label{border:1px solid #1b2530;background:#060a0f;border-radius:7px;padding:6px;color:#c9d1d9;font-size:12px;}
       .wl-save{width:100%;background:#122033;border:1px solid #36506b;color:#d7ecff;border-radius:7px;font-weight:900;padding:8px;cursor:pointer;}
-      .heatmap{grid-template-columns:repeat(auto-fit,minmax(145px,1fr))!important;}
-      .tile{min-height:118px!important;transition:transform .18s ease, border-color .18s ease;}
-      .tile:hover{transform:translateY(-2px);border-color:#6cb6ff;}
-      .live-price{margin-top:4px;color:#f2f6fb;font-size:16px;font-weight:900;letter-spacing:.01em;}
-      .tile .action b{font-size:12px!important;}
-      .tile::after{bottom:6px!important;}
-      .tile .action{margin-bottom:20px!important;}
-      .right{grid-template-rows:250px minmax(430px,1fr) 150px!important;}
-      .left{grid-template-rows:170px 165px minmax(230px,1fr)!important;gap:8px!important;}
+      .heatmap{grid-template-columns:repeat(auto-fit,minmax(128px,1fr))!important;gap:7px!important;}
+      .tile{min-height:96px!important;padding:8px 9px!important;display:grid!important;grid-template-rows:22px 14px 24px 20px!important;gap:2px!important;transition:transform .18s ease,border-color .18s ease;overflow:hidden!important;}
+      .tile:hover{transform:translateY(-1px);border-color:#6cb6ff;}
+      .tile-line1,.tile-line2{display:flex;justify-content:space-between;align-items:center;gap:5px;min-width:0;}
+      .symbol{font-size:18px!important;line-height:1!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .score{font-size:13px!important;line-height:1!important;flex-shrink:0;}
+      .grade{font-size:10px!important;margin:0!important;line-height:1.1!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .live-price{margin:0!important;color:#f2f6fb;font-size:17px!important;line-height:1.15!important;font-weight:900;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .tile-line2 b{font-size:11px!important;color:#fff;white-space:nowrap;}
+      .tile-line2 span{font-size:10px!important;color:#b7c4d5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .tile::after{display:none!important;content:none!important;}
+      .tile .action{display:none!important;}
+      .right{grid-template-rows:230px minmax(420px,1fr) 145px!important;}
+      .left{grid-template-rows:160px 148px minmax(220px,1fr)!important;gap:7px!important;}
       .today-action-panel{overflow:hidden!important;}
-      .today-symbol{display:flex;justify-content:space-between;align-items:center;border:1px solid #1b2530;background:#070b10;border-radius:8px;padding:8px;margin-bottom:6px;}
-      .today-symbol b{font-size:22px;color:#f2f6fb;}.today-symbol span{color:#f0b35a;font-weight:900;}
+      .today-symbol{display:flex;justify-content:space-between;align-items:center;border:1px solid #1b2530;background:#070b10;border-radius:8px;padding:7px;margin-bottom:5px;}
+      .today-symbol b{font-size:20px;color:#f2f6fb;}.today-symbol span{color:#f0b35a;font-weight:900;}
       #tradeMemoryPanel #paperPanel{display:none!important;}
-      .daily-brief-msg{white-space:pre-line!important;font-size:13.5px!important;line-height:1.6!important;}
+      .daily-brief-msg{white-space:pre-line!important;font-size:13px!important;line-height:1.55!important;}
       .bottom-grid{grid-template-columns:1fr 1.15fr 1.3fr!important;}
-      .gate-grid label{font-size:12px!important;padding:8px!important;}
-      .journal-list{max-height:92px!important;}
+      .gate-grid label{font-size:11.5px!important;padding:7px!important;}
+      .journal-list{max-height:82px!important;}
       @media(max-width:1280px){.terminal-shell{grid-template-rows:auto!important}.watchlist-panel{left:12px;right:12px;width:auto}.left{grid-template-rows:auto!important}.right{grid-template-rows:auto!important}}
     `;
     document.head.appendChild(style);
   }
   function wrapSelect(){
     const old = window.selectSymbol;
-    if(typeof old === 'function' && !old.__v53Wrapped){
+    if(typeof old === 'function' && !old.__v531Wrapped){
       const wrapped = function(sym){
         old(sym);
         document.querySelectorAll('.tile[data-symbol]').forEach(tile => tile.classList.toggle('selected', tile.dataset.symbol === sym));
@@ -268,7 +255,7 @@
         sortAndRenderTiles();
         if(typeof window.loadLevels === 'function') window.loadLevels(sym);
       };
-      wrapped.__v53Wrapped = true;
+      wrapped.__v531Wrapped = true;
       window.selectSymbol = wrapped;
     }
   }
