@@ -104,16 +104,25 @@ function updateUsageBubble(usage, state) {
   bubble.title = '本次：' + usage.totalTokens + ' tokens\nInput: ' + usage.inputTokens + '\nOutput: ' + usage.outputTokens + '\n估算：$' + Number(usage.estimatedCost || 0).toFixed(4) + '\n本月：$' + month.toFixed(2) + ' / $10';
 }
 
-function loadMultiChartPanel() {
-  if (document.getElementById('multiChartLoader')) return;
+function loadScriptOnce(id, src) {
+  if (document.getElementById(id)) return;
   const s = document.createElement('script');
-  s.id = 'multiChartLoader';
-  s.src = 'multi-chart.js';
+  s.id = id;
+  s.src = src;
   document.body.appendChild(s);
+}
+
+function loadMultiChartPanel() {
+  loadScriptOnce('multiChartLoader', 'multi-chart.js');
+}
+
+function loadLevelsPanel() {
+  loadScriptOnce('levelsPanelLoader', 'levels-panel.js');
 }
 
 function enableAgentClient() {
   loadMultiChartPanel();
+  loadLevelsPanel();
   improveChatReadability();
 
   const form = document.getElementById('aiChatForm');
