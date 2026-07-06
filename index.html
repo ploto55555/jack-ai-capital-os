@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jack AI Capital OS</title>
-  <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="rail.css" />
+  <link rel="stylesheet" href="v13.css" />
 </head>
 <body>
   <div class="app-frame">
@@ -24,122 +24,101 @@
 
     <main class="terminal-shell">
       <header class="topbar">
-        <div>JACK AI CAPITAL OS // PERSONAL TRADING TERMINAL</div>
-        <div>MODE: SIMULATION · DATA: MOCK · AUTO-TRADING: OFF</div>
+        <div><b>JACK AI CAPITAL OS</b> // Personal Trading Decision Workstation</div>
+        <div>Market: <b>FX / GOLD</b> · Data: <b>TradingView Chart</b> · Mode: <b>Manual</b> · Auto-trade: <b>OFF</b></div>
       </header>
 
-      <section class="decision-strip" aria-label="Decision summary">
-        <article class="decision-card primary"><span>DECISION</span><strong id="decisionAction">WAIT</strong></article>
-        <article class="decision-card"><span>MODE</span><strong id="decisionMode">DEFENSE</strong></article>
-        <article class="decision-card"><span>SYMBOL</span><strong id="decisionSymbol">GBPJPY</strong></article>
-        <article class="decision-card"><span>RISK</span><strong id="decisionRisk">4%</strong></article>
-        <article class="decision-card"><span>SCORE</span><strong id="decisionScore">18/20</strong></article>
-        <article class="decision-card danger"><span>WARNING</span><strong id="decisionWarning">NO CHASE</strong></article>
+      <section class="heatmap">
+        <article class="tile good selected" data-symbol="GBPJPY"><div class="tile-top"><div><div class="symbol">GBPJPY</div><div class="grade">A+ setup</div></div><div class="score">18/20</div></div><div class="action"><b>WAIT</b><span>No chase</span></div></article>
+        <article class="tile watch" data-symbol="USDJPY"><div class="tile-top"><div><div class="symbol">USDJPY</div><div class="grade">A setup</div></div><div class="score">14/20</div></div><div class="action"><b>WATCH</b><span>Extended</span></div></article>
+        <article class="tile neutral" data-symbol="XAUUSD"><div class="tile-top"><div><div class="symbol">XAUUSD</div><div class="grade">Paper</div></div><div class="score">13/20</div></div><div class="action"><b>PAPER</b><span>USD conflict</span></div></article>
+        <article class="tile bad" data-symbol="GBPUSD"><div class="tile-top"><div><div class="symbol">GBPUSD</div><div class="grade">Reject</div></div><div class="score">08/20</div></div><div class="action"><b>REJECT</b><span>No edge</span></div></article>
+        <article class="tile neutral" data-symbol="EURUSD"><div class="tile-top"><div><div class="symbol">EURUSD</div><div class="grade">Neutral</div></div><div class="score">10/20</div></div><div class="action"><b>WAIT</b><span>Range</span></div></article>
+        <article class="tile good" data-symbol="AUDJPY"><div class="tile-top"><div><div class="symbol">AUDJPY</div><div class="grade">A setup</div></div><div class="score">16/20</div></div><div class="action"><b>WATCH</b><span>Clean zone</span></div></article>
+        <article class="tile watch" data-symbol="USDCHF"><div class="tile-top"><div><div class="symbol">USDCHF</div><div class="grade">Watch</div></div><div class="score">12/20</div></div><div class="action"><b>WAIT</b><span>No trigger</span></div></article>
+        <article class="tile good" data-symbol="DXY"><div class="tile-top"><div><div class="symbol">DXY</div><div class="grade">Macro</div></div><div class="score">15/20</div></div><div class="action"><b>STRONG</b><span>USD check</span></div></article>
+        <article class="tile watch" data-symbol="US10Y"><div class="tile-top"><div><div class="symbol">US10Y</div><div class="grade">Macro</div></div><div class="score">14/20</div></div><div class="action"><b>WATCH</b><span>Gold risk</span></div></article>
+        <article class="tile bad" data-symbol="EURGBP"><div class="tile-top"><div><div class="symbol">EURGBP</div><div class="grade">Weak</div></div><div class="score">07/20</div></div><div class="action"><b>REJECT</b><span>No space</span></div></article>
       </section>
 
-      <section class="grid-main">
-        <aside class="stack left-stack">
+      <section class="main">
+        <aside class="left">
           <section class="panel">
-            <h2>ACCOUNT</h2>
+            <h3>Capital / Risk Mode</h3>
             <div class="kv"><span>Equity</span><b>$500</b></div>
-            <div class="kv"><span>Stage</span><b>0 → 2K</b></div>
-            <div class="kv"><span>Max DD</span><b>-25% pause</b></div>
+            <div class="kv"><span>Stage</span><b>$500 → $2K</b></div>
             <div class="kv"><span>Today</span><b>0R</b></div>
-            <div class="kv"><span>Goal</span><b>$1M path</b></div>
+            <div class="kv"><span>Week</span><b>+2.4R</b></div>
+            <div class="kv"><span>Drawdown</span><b>-3.2%</b></div>
+            <div class="kv"><span>Max risk now</span><b>4%</b></div>
+            <div style="margin-top:10px"><span class="mode-pill">● DEFENSE MODE</span></div>
           </section>
 
-          <section class="panel command-menu">
-            <h2>COMMAND MENU</h2>
-            <button data-command="scan gbpjpy">SCAN GBPJPY</button>
-            <button data-command="risk 500 4 50">RISK 500 4 50</button>
-            <button data-command="mistakes">MISTAKES</button>
-            <button data-command="rules">RULE QUEUE</button>
-            <button data-command="help">HELP</button>
-          </section>
-
-          <section class="panel watchlist">
-            <h2>WATCHLIST</h2>
-            <button data-symbol="GBPJPY">GBPJPY <span>18/20</span></button>
-            <button data-symbol="USDJPY">USDJPY <span>14/20</span></button>
-            <button data-symbol="XAUUSD">XAUUSD <span>13/20</span></button>
-            <button data-symbol="GBPUSD">GBPUSD <span>08/20</span></button>
-            <button data-symbol="EURUSD">EURUSD <span>10/20</span></button>
+          <section class="panel">
+            <h3>Abu Scanner Table</h3>
+            <div class="scanner-list">
+              <div class="scan-row"><b>GBPJPY</b><span class="scan-score">18</span><span class="scan-state">A+ · wait pullback</span></div>
+              <div class="scan-row"><b>AUDJPY</b><span class="scan-score">16</span><span class="scan-state">A · clean zone</span></div>
+              <div class="scan-row"><b>DXY</b><span class="scan-score">15</span><span class="scan-state">Strong USD</span></div>
+              <div class="scan-row"><b>USDJPY</b><span class="scan-score">14</span><span class="scan-state">Watch · extended</span></div>
+              <div class="scan-row"><b>XAUUSD</b><span class="scan-score">13</span><span class="scan-state">Paper · yields risk</span></div>
+              <div class="scan-row"><b>EURUSD</b><span class="scan-score">10</span><span class="scan-state">Neutral range</span></div>
+              <div class="scan-row"><b>GBPUSD</b><span class="scan-score">08</span><span class="scan-state">Reject · no edge</span></div>
+            </div>
           </section>
         </aside>
 
-        <section class="panel output-panel">
-          <h2>COMMAND OUTPUT</h2>
-          <pre id="terminalOutput">BOOT SEQUENCE COMPLETE...
-
-SYSTEM PURPOSE:
-Personal AI Capital OS for discipline, risk, journaling and Abu-style setup review.
-
-CURRENT DEFAULT:
-SYMBOL: GBPJPY
-ACTION: WAIT
-REASON: Strong setup score, but current price is not at clean entry. Do not chase.
-
-TYPE COMMAND:
-scan gbpjpy
-risk 500 4 50
-mistakes
-rules
-help</pre>
-          <form class="terminal-input" id="commandForm">
-            <span>&gt;</span>
-            <input id="commandInput" autocomplete="off" placeholder="type command here..." />
-          </form>
+        <section class="panel chart-panel">
+          <div class="chart-head">
+            <div><strong id="chartSymbol">GBPJPY</strong> · TradingView Live Chart Area · 1H / 4H Decision Context</div>
+            <div class="tf"><span>15m</span><span class="active">1H</span><span>4H</span><span>1D</span></div>
+          </div>
+          <div class="chart">
+            <svg viewBox="0 0 1000 520" preserveAspectRatio="none">
+              <polyline points="0,390 60,370 120,380 180,335 240,350 300,300 360,310 420,245 480,260 540,220 600,230 660,190 720,205 780,160 840,175 900,110 960,250 1000,210" fill="none" stroke="#f0b35a" stroke-width="4" opacity=".92"/>
+              <polyline points="0,430 80,390 160,405 240,365 320,340 400,360 480,300 560,315 640,265 720,285 800,230 880,270 960,180 1000,190" fill="none" stroke="#6cb6ff" stroke-width="2" opacity=".45"/>
+              <line x1="0" y1="250" x2="1000" y2="250" stroke="#ff5b6e" stroke-width="1" stroke-dasharray="8 8" opacity=".5"/>
+              <rect x="850" y="90" width="32" height="190" fill="#2fd27a" opacity=".16"/>
+              <rect x="930" y="165" width="32" height="150" fill="#ff5b6e" opacity=".16"/>
+            </svg>
+            <div class="price-tag">216.00</div>
+            <div class="watermark">TRADINGVIEW CHART</div>
+          </div>
         </section>
 
-        <aside class="stack right-stack">
+        <aside class="right">
           <section class="panel">
-            <h2>MARKET INTEL</h2>
-            <p>USD: mixed · JPY: weak · Gold: watching yields</p>
-            <p>High impact news: manual check required</p>
-            <p>Data layer: mock now, API later</p>
+            <h3>Selected Symbol AI Panel</h3>
+            <div class="selected-title"><div><div class="big" id="selectedSymbol">GBPJPY</div><div style="color:var(--muted);font-size:12px">British Pound / Japanese Yen</div></div><span class="badge" id="setupBadge">A+ SETUP</span></div>
+            <div class="decision-grid">
+              <div class="mini"><span>Decision</span><b id="selectedDecision" style="color:var(--amber)">WAIT</b></div>
+              <div class="mini"><span>Score</span><b id="selectedScore">18/20</b></div>
+              <div class="mini"><span>Risk allowed</span><b id="selectedRisk">4%</b></div>
+              <div class="mini"><span>Warning</span><b id="selectedWarning" class="danger-text">NO CHASE</b></div>
+            </div>
+            <p class="reason" id="selectedReason"><b class="ok-text">Structure is bullish</b>, but current price is late. Wait for pullback into clean zone or H1 compression break. No mid-price entry.</p>
+          </section>
+
+          <section class="panel mistakes">
+            <h3>Mistake Memory</h3>
+            <ul><li>Do not chase after breakout candle.</li><li>No entry if stop is too large for account stage.</li><li>Do not enter before high-impact news.</li><li>After loss, reduce risk instead of attacking.</li></ul>
           </section>
 
           <section class="panel">
-            <h2>MISTAKE MEMORY</h2>
-            <ul>
-              <li>Do not enter mid-price.</li>
-              <li>Do not chase after breakout candle.</li>
-              <li>Small stop only when structure is clean.</li>
-              <li>No attack mode after emotional loss.</li>
-            </ul>
-          </section>
-
-          <section class="panel">
-            <h2>RISK LADDER</h2>
-            <div class="kv"><span>Normal</span><b>1–2%</b></div>
-            <div class="kv"><span>A+</span><b>3–4%</b></div>
-            <div class="kv"><span>S</span><b>5%</b></div>
-            <div class="kv"><span>DD -20%</span><b>0.25–0.5%</b></div>
-          </section>
-
-          <section class="panel">
-            <h2>RULE QUEUE</h2>
-            <p>AI may suggest rules later. User approval required.</p>
-            <button class="small" id="approveRule">APPROVE MOCK RULE</button>
-            <button class="small" id="rejectRule">REJECT</button>
-            <p id="ruleStatus">Status: waiting</p>
+            <h3>Rule Queue</h3>
+            <div class="rule-card">Suggested rule: if price is extended after breakout, downgrade ATTACK to WAIT unless pullback trigger appears.<br><br>Status: pending user approval.</div>
           </section>
         </aside>
       </section>
 
       <section class="bottom-grid">
         <section class="panel">
-          <h2>JOURNAL FIELDS</h2>
-          <p>symbol · direction · entry · stop · target · R · emotion · mistake · lesson</p>
+          <h3>Risk Calculator</h3>
+          <div class="input-grid"><div class="fake-input">Equity $500</div><div class="fake-input">Risk 4%</div><div class="fake-input">Stop 50 pips</div></div>
+          <div class="calc-result">Risk amount: <b>$20</b> · Target 5R: <b>$100</b> · Only valid for A+ or S setup.</div>
         </section>
-        <section class="panel">
-          <h2>SNOWBALL LEARNING</h2>
-          <p>Every trade becomes data. More journal entries → better mistake memory → better decision quality.</p>
-        </section>
-        <section class="panel">
-          <h2>SETTINGS</h2>
-          <p>Auto-trading: OFF · AI: manual review · Database: localStorage first · Market API: later</p>
-        </section>
+        <section class="panel trade-plan"><h3>Trade Plan</h3><b>GBPJPY Long Plan:</b> wait for pullback / compression break. Entry only if small stop is possible. Invalidation: price breaks structure before trigger.</section>
+        <section class="panel journal"><h3>Journal / Snowball Learning</h3><b>Before trade:</b> reason, emotion, setup score, risk %. <b>After trade:</b> result R, mistake type, lesson. Every trade becomes system memory.</section>
       </section>
     </main>
   </div>
