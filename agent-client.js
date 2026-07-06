@@ -124,10 +124,15 @@ function loadPaperTradeLoop() {
   loadScriptOnce('paperTradeLoader', 'paper-trade.js');
 }
 
+function loadPaperTradePage() {
+  loadScriptOnce('paperPageLoader', 'paper-page.js');
+}
+
 function enableAgentClient() {
   loadMultiChartPanel();
   loadLevelsPanel();
   loadPaperTradeLoop();
+  loadPaperTradePage();
   improveChatReadability();
 
   const form = document.getElementById('aiChatForm');
