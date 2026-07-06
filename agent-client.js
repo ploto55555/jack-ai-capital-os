@@ -112,27 +112,18 @@ function loadScriptOnce(id, src) {
   document.body.appendChild(s);
 }
 
-function loadMultiChartPanel() {
-  loadScriptOnce('multiChartLoader', 'multi-chart.js');
-}
-
-function loadLevelsPanel() {
-  loadScriptOnce('levelsPanelLoader', 'levels-panel.js');
-}
-
-function loadPaperTradeLoop() {
-  loadScriptOnce('paperTradeLoader', 'paper-trade.js');
-}
-
-function loadPaperTradePage() {
-  loadScriptOnce('paperPageLoader', 'paper-page.js');
-}
+function loadMultiChartPanel() { loadScriptOnce('multiChartLoader', 'multi-chart.js'); }
+function loadLevelsPanel() { loadScriptOnce('levelsPanelLoader', 'levels-panel.js'); }
+function loadPaperTradeLoop() { loadScriptOnce('paperTradeLoader', 'paper-trade.js'); }
+function loadPaperTradePage() { loadScriptOnce('paperPageLoader', 'paper-page.js'); }
+function loadStrategyResearchEngine() { loadScriptOnce('strategyEngineLoader', 'strategy-engine.js'); }
 
 function enableAgentClient() {
   loadMultiChartPanel();
   loadLevelsPanel();
   loadPaperTradeLoop();
   loadPaperTradePage();
+  loadStrategyResearchEngine();
   improveChatReadability();
 
   const form = document.getElementById('aiChatForm');
@@ -166,10 +157,7 @@ function enableAgentClient() {
     const result = await callAgent(question, currentSymbol, context);
     let answer = result.answer;
 
-    if (!answer || answer === 'No response.') {
-      answer = fallbackChineseAnswer(question, currentSymbol, context);
-    }
-
+    if (!answer || answer === 'No response.') answer = fallbackChineseAnswer(question, currentSymbol, context);
     answer = formatAgentAnswer(answer);
 
     const box = document.getElementById('chatBox');
