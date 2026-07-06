@@ -1,1 +1,4 @@
 Chinese mode requested. AI replies should be in Chinese.
+
+V5.2.1 force deploy trigger.
+Purpose: make Vercel pull latest main with AI Research Room, runner status dashboard, and cache-busted script loading.
