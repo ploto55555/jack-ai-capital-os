@@ -1,195 +1,43 @@
+@import url('./style.css');
+
+/* V1.1 readability override */
 :root {
-  --bg: #000000;
-  --panel: #020604;
-  --panel2: #041009;
-  --text: #00ff66;
-  --text2: #9dffbd;
-  --dim: #35764a;
-  --line: #00aa44;
-  --line2: #185f31;
-  --amber: #ffcc66;
-  --red: #ff4d5e;
-  --cyan: #5fd9ff;
-  --white: #eafff0;
+  --text2: #b9ffd0;
+  --dim: #4d9562;
+  --line: #00bb4d;
+  --line2: #207a3d;
+  --amber: #ffdd75;
+  --red: #ff5c68;
+  --cyan: #7be6ff;
+  --white: #f1fff5;
 }
 
-* { box-sizing: border-box; }
-html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text); }
-body {
-  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  overflow: hidden;
-}
+.terminal-shell { padding: 9px; text-shadow: 0 0 7px rgba(0,255,102,0.38); }
+.topbar { height: 34px; padding: 0 12px; font-size: 13px; }
+.decision-strip { height: 100px; gap: 7px; margin-top: 7px; }
+.decision-card { padding: 11px; }
+.decision-card span { font-size: 12px; margin-bottom: 7px; }
+.decision-card strong { font-size: 31px; }
+.decision-card.primary strong { font-size: 44px; }
+.decision-card.danger strong { font-size: 38px; }
+.grid-main { height: calc(100vh - 34px - 100px - 132px - 34px); min-height: 430px; grid-template-columns: 340px 1fr 420px; gap: 7px; margin-top: 7px; }
+.stack { gap: 7px; }
+.panel { padding: 11px; }
+.panel h2 { margin-bottom: 10px; font-size: 13px; padding-bottom: 7px; }
+.panel p, .panel li, .kv, .watchlist button, .command-menu button, .small { font-size: 14px; line-height: 1.45; }
+.kv { padding: 5px 0; }
+.command-menu button, .watchlist button, .small { padding: 8px 9px; margin-bottom: 6px; }
+.small { font-size: 13px; }
+.output-panel { grid-template-rows: auto 1fr 42px; }
+#terminalOutput { font-size: 15px; line-height: 1.45; padding: 8px 0; }
+.terminal-input { grid-template-columns: 24px 1fr; padding-top: 8px; font-size: 15px; }
+.bottom-grid { height: 132px; gap: 7px; margin-top: 7px; }
 
-button, input { font: inherit; }
-
-.terminal-shell {
-  width: 100vw;
-  height: 100vh;
-  padding: 8px;
-  background:
-    radial-gradient(circle at center, rgba(0,255,102,0.06), transparent 45%),
-    linear-gradient(rgba(0,255,102,0.035) 50%, rgba(0,0,0,0.02) 50%);
-  background-size: 100% 100%, 100% 4px;
-  text-shadow: 0 0 8px rgba(0,255,102,0.45);
-}
-
-.topbar {
-  height: 30px;
-  border: 1px solid var(--line);
-  background: var(--panel2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
-  font-size: 12px;
-  color: var(--cyan);
-}
-
-.decision-strip {
-  display: grid;
-  grid-template-columns: 1.25fr repeat(5, 1fr);
-  gap: 6px;
-  height: 88px;
-  margin-top: 6px;
-}
-
-.decision-card {
-  border: 1px solid var(--line);
-  background: linear-gradient(180deg, var(--panel2), var(--panel));
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 0;
-}
-
-.decision-card span {
-  color: var(--dim);
-  font-size: 11px;
-  margin-bottom: 5px;
-}
-
-.decision-card strong {
-  color: var(--white);
-  font-size: 24px;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.decision-card.primary strong { color: var(--amber); font-size: 36px; }
-.decision-card.danger strong { color: var(--red); font-size: 28px; }
-
-.grid-main {
-  height: calc(100vh - 30px - 88px - 118px - 24px);
-  min-height: 390px;
-  display: grid;
-  grid-template-columns: 260px 1fr 320px;
-  gap: 6px;
-  margin-top: 6px;
-}
-
-.stack { display: grid; gap: 6px; min-height: 0; }
-.left-stack { grid-template-rows: 0.8fr 1.1fr 1.1fr; }
-.right-stack { grid-template-rows: 0.9fr 1.15fr 0.95fr 1fr; }
-
-.panel {
-  border: 1px solid var(--line2);
-  background: rgba(2, 6, 4, 0.94);
-  padding: 9px;
-  min-height: 0;
-  overflow: hidden;
-  box-shadow: inset 0 0 18px rgba(0,255,102,0.05);
-}
-
-.panel h2 {
-  margin: 0 0 8px;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  color: var(--cyan);
-  border-bottom: 1px solid var(--line2);
-  padding-bottom: 5px;
-}
-
-.panel p, .panel li, .kv, .watchlist button, .command-menu button, .small {
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.kv {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  border-bottom: 1px dotted rgba(0,170,68,0.35);
-  padding: 4px 0;
-}
-.kv span { color: var(--text2); }
-.kv b { color: var(--white); }
-
-.command-menu, .watchlist { display: flex; flex-direction: column; }
-.command-menu button, .watchlist button, .small {
-  width: 100%;
-  border: 1px solid var(--line2);
-  background: #010301;
-  color: var(--text);
-  padding: 6px 7px;
-  margin-bottom: 5px;
-  text-align: left;
-  cursor: pointer;
-}
-.command-menu button:hover, .watchlist button:hover, .small:hover {
-  border-color: var(--line);
-  color: var(--white);
-  background: #031409;
-}
-.watchlist button { display: flex; justify-content: space-between; }
-.watchlist span { color: var(--amber); }
-.small { font-size: 11px; text-align: center; }
-
-.output-panel {
-  display: grid;
-  grid-template-rows: auto 1fr 34px;
-}
-
-#terminalOutput {
-  margin: 0;
-  padding: 6px 0;
-  color: var(--text2);
-  font-size: 13px;
-  line-height: 1.36;
-  white-space: pre-wrap;
-  overflow: hidden;
-}
-
-.terminal-input {
-  display: grid;
-  grid-template-columns: 20px 1fr;
-  align-items: center;
-  border-top: 1px solid var(--line2);
-  padding-top: 6px;
-  font-size: 13px;
-}
-.terminal-input input {
-  background: transparent;
-  border: 0;
-  outline: none;
-  color: var(--white);
-  caret-color: var(--text);
-}
-
-ul { margin: 0; padding-left: 18px; }
-
-.bottom-grid {
-  height: 118px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin-top: 6px;
-}
-
-@media (max-width: 980px) {
+@media (max-width: 1280px) {
   body { overflow: auto; }
   .terminal-shell { height: auto; min-height: 100vh; }
-  .decision-strip, .grid-main, .bottom-grid { grid-template-columns: 1fr; height: auto; }
-  .grid-main { min-height: 0; }
+  .decision-strip { grid-template-columns: repeat(3, 1fr); height: auto; }
+  .grid-main { grid-template-columns: 1fr; height: auto; min-height: 0; }
+  .bottom-grid { grid-template-columns: 1fr; height: auto; }
   .left-stack, .right-stack { grid-template-rows: auto; }
 }
