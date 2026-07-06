@@ -25,8 +25,8 @@
 
     <main class="terminal-shell">
       <header class="topbar">
-        <div><b>JACK AI CAPITAL OS</b> // Personal Trading Decision Workstation</div>
-        <div>Market: <b>FX / GOLD</b> · Data: <b>TradingView Chart</b> · Mode: <b>Manual</b> · Auto-trade: <b>OFF</b></div>
+        <div><b>JACK AI CAPITAL OS</b> // Today MVP Running</div>
+        <div>Chart: <b>TradingView</b> · AI: <b>Mock</b> · Journal: <b>Local</b> · Auto-trade: <b>OFF</b></div>
       </header>
 
       <section class="heatmap">
@@ -46,12 +46,12 @@
         <aside class="left">
           <section class="panel">
             <h3>Capital / Risk Mode</h3>
-            <div class="kv"><span>Equity</span><b>$500</b></div>
+            <div class="kv"><span>Equity</span><b id="accountEquity">$500</b></div>
             <div class="kv"><span>Stage</span><b>$500 → $2K</b></div>
             <div class="kv"><span>Today</span><b>0R</b></div>
             <div class="kv"><span>Week</span><b>+2.4R</b></div>
             <div class="kv"><span>Drawdown</span><b>-3.2%</b></div>
-            <div class="kv"><span>Max risk now</span><b>4%</b></div>
+            <div class="kv"><span>Max risk now</span><b id="accountMaxRisk">4%</b></div>
             <div style="margin-top:10px"><span class="mode-pill">● DEFENSE MODE</span></div>
           </section>
 
@@ -71,41 +71,31 @@
 
         <section class="panel chart-panel">
           <div class="chart-head">
-            <div><strong id="chartSymbol">GBPJPY</strong> · TradingView Live Chart Area · 1H / 4H Decision Context</div>
+            <div><strong id="chartSymbol">GBPJPY</strong> · Live TradingView Chart · display only</div>
             <div class="tf"><span>15m</span><span class="active">1H</span><span>4H</span><span>1D</span></div>
           </div>
-          <div class="chart">
-            <svg viewBox="0 0 1000 520" preserveAspectRatio="none">
-              <polyline points="0,390 60,370 120,380 180,335 240,350 300,300 360,310 420,245 480,260 540,220 600,230 660,190 720,205 780,160 840,175 900,110 960,250 1000,210" fill="none" stroke="#f0b35a" stroke-width="4" opacity=".92"/>
-              <polyline points="0,430 80,390 160,405 240,365 320,340 400,360 480,300 560,315 640,265 720,285 800,230 880,270 960,180 1000,190" fill="none" stroke="#6cb6ff" stroke-width="2" opacity=".45"/>
-              <line x1="0" y1="250" x2="1000" y2="250" stroke="#ff5b6e" stroke-width="1" stroke-dasharray="8 8" opacity=".5"/>
-              <rect x="850" y="90" width="32" height="190" fill="#2fd27a" opacity=".16"/>
-              <rect x="930" y="165" width="32" height="150" fill="#ff5b6e" opacity=".16"/>
-            </svg>
-            <div class="price-tag">216.00</div>
-            <div class="watermark">TRADINGVIEW CHART</div>
+          <div class="chart tv-chart-wrap">
+            <div id="tv-chart" class="tv-chart"><div class="tv-loading">Loading TradingView...</div></div>
           </div>
         </section>
 
         <aside class="right">
           <section class="panel">
             <h3>Selected Symbol AI Panel</h3>
-            <div class="selected-title"><div><div class="big" id="selectedSymbol">GBPJPY</div><div style="color:var(--muted);font-size:12px">British Pound / Japanese Yen</div></div><span class="badge" id="setupBadge">A+ SETUP</span></div>
+            <div class="selected-title"><div><div class="big" id="selectedSymbol">GBPJPY</div><div id="selectedName" style="color:var(--muted);font-size:12px">British Pound / Japanese Yen</div></div><span class="badge" id="setupBadge">A+ SETUP</span></div>
             <div class="decision-grid">
               <div class="mini"><span>Decision</span><b id="selectedDecision" style="color:var(--amber)">WAIT</b></div>
               <div class="mini"><span>Score</span><b id="selectedScore">18/20</b></div>
               <div class="mini"><span>Risk allowed</span><b id="selectedRisk">4%</b></div>
               <div class="mini"><span>Warning</span><b id="selectedWarning" class="danger-text">NO CHASE</b></div>
             </div>
-            <p class="reason" id="selectedReason"><b class="ok-text">Structure is bullish</b>, but current price is late. Wait for pullback into clean zone or H1 compression break. No mid-price entry.</p>
+            <p class="reason" id="selectedReason">Structure is bullish, but current price is late. Wait for pullback into clean zone or H1 compression break. No mid-price entry.</p>
           </section>
 
           <section class="panel ai-chat-panel">
             <h3>Ask Jack AI</h3>
             <div class="chat-box" id="chatBox">
-              <div class="msg ai">Ask me about the selected symbol, risk, setup quality, or why the system says wait.</div>
-              <div class="msg user">Should I trade GBPJPY now?</div>
-              <div class="msg ai">Not yet. Score is strong, but entry is late. Wait for pullback or compression break.</div>
+              <div class="msg ai">Ask me about selected symbol, risk, setup quality, or why the system says wait. Mock AI is running today.</div>
             </div>
             <form class="ai-chat-form" id="aiChatForm">
               <input id="aiChatInput" autocomplete="off" placeholder="Ask AI: why wait, risk size, trade plan..." />
@@ -123,15 +113,21 @@
       <section class="bottom-grid">
         <section class="panel">
           <h3>Risk Calculator</h3>
-          <div class="input-grid"><div class="fake-input">Equity $500</div><div class="fake-input">Risk 4%</div><div class="fake-input">Stop 50 pips</div></div>
-          <div class="calc-result">Risk amount: <b>$20</b> · Target 5R: <b>$100</b> · Only valid for A+ or S setup.</div>
+          <form class="calc-form" id="riskForm">
+            <input id="equityInput" type="number" value="500" min="1" placeholder="Equity" />
+            <input id="riskInput" type="number" value="4" min="0" step="0.1" placeholder="Risk %" />
+            <input id="stopInput" type="number" value="50" min="1" placeholder="Stop pips" />
+            <button type="submit">Calc</button>
+          </form>
+          <div class="calc-result" id="riskResult">Risk amount: $20.00 · Approx pip value: $0.40 · 5R target: $100.00</div>
         </section>
-        <section class="panel trade-plan"><h3>Trade Plan</h3><b>GBPJPY Long Plan:</b> wait for pullback / compression break. Entry only if small stop is possible. Invalidation: price breaks structure before trigger.</section>
-        <section class="panel journal"><h3>Journal / Snowball Learning</h3><b>Before trade:</b> reason, emotion, setup score, risk %. <b>After trade:</b> result R, mistake type, lesson. Every trade becomes system memory.</section>
+        <section class="panel trade-plan"><h3>Trade Plan</h3><b id="planTitle">GBPJPY Plan:</b> <span id="tradePlanText">Wait for pullback / compression break. Entry only if small stop is possible.</span></section>
+        <section class="panel journal-panel"><h3>Journal / Snowball</h3><form class="journal-form" id="journalForm"><input id="journalInput" autocomplete="off" placeholder="Save note: setup, emotion, mistake, lesson..." /><button type="submit">Save</button></form><div class="journal-list" id="journalList"></div></section>
       </section>
     </main>
   </div>
 
+  <script src="https://s3.tradingview.com/tv.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
