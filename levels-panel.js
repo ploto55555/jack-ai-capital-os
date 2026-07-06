@@ -56,6 +56,20 @@ function abuLevelSummary(data){
   return '没有明显突破。阿布规则：等边缘、等结构、等客观小止损。';
 }
 
+function renderFallbackLevels(symbol, reason){
+  const price=document.getElementById('levelsPrice');
+  const grid=document.getElementById('levelsGrid');
+  const note=document.getElementById('levelsNote');
+  const s=(typeof setups!=='undefined' && setups[symbol]) ? setups[symbol] : {};
+  const p=Number(s.price);
+  if(price) price.textContent=`${symbol} · fallback ${fmtLevel(p)} · static setup`;
+  if(grid){
+    grid.innerHTML='<div class="levels-head">TF</div><div class="levels-head">Near S</div><div class="levels-head">Broken</div><div class="levels-head">Next R</div><div class="levels-head">Status</div>';
+    ['1H','4H','1W','1M'].forEach(tf=>grid.insertAdjacentHTML('beforeend',`<div class="levels-cell level-tf">${tf}</div><div class="levels-cell">-</div><div class="levels-cell">-</div><div class="levels-cell">-</div><div class="levels-cell"><span class="level-status level-middle">WAIT</span></div>`));
+  }
+  if(note) note.textContent=`Fallback: ${reason || 'Levels API 暂时不能读取'}。先用卡片 setup 判断：${s.reason || '等 key zone / 小止损 / 不追价。'}`;
+}
+
 async function loadLevels(symbol){
   const price=document.getElementById('levelsPrice');
   const grid=document.getElementById('levelsGrid');
@@ -66,8 +80,12 @@ async function loadLevels(symbol){
   note.textContent='正在计算 Nearest S / Broken R / Next R...';
   try{
     const r=await fetch('/api/levels?symbol='+encodeURIComponent(symbol));
+    if(!r.ok) throw new Error('HTTP '+r.status);
     const data=await r.json();
+    if(!data || data.ok===false || !data.levels) throw new Error(data?.error || 'No levels data');
     const livePrice=Number(data.price);
+    if(!Number.isFinite(livePrice)) throw new Error('No live price');
+    if(typeof window.updatePairLivePrice==='function') window.updatePairLivePrice(symbol, livePrice, data);
     price.textContent=`${data.symbol} · ${fmtLevel(livePrice)} · ${data.source}`;
     const labels={H1:'1H',H4:'4H',W1:'1W',M1:'1M'};
     grid.innerHTML='<div class="levels-head">TF</div><div class="levels-head">Near S</div><div class="levels-head">Broken</div><div class="levels-head">Next R</div><div class="levels-head">Status</div>';
@@ -78,10 +96,10 @@ async function loadLevels(symbol){
     });
     note.textContent='ABU: '+abuLevelSummary(data);
   }catch(e){
-    price.textContent=`${symbol} · levels error`;
-    note.textContent='Levels API 暂时不能读取。检查 Vercel 部署或 API key。';
+    renderFallbackLevels(symbol, e.message);
   }
 }
+window.loadLevels=loadLevels;
 
 (function(){
   injectLevelsStyle();
