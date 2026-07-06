@@ -11,6 +11,7 @@
   <div class="app-frame">
     <nav class="side-rail" aria-label="Future feature navigation">
       <button class="rail-btn active" title="Dashboard"><span>⌂</span><small>Dashboard</small></button>
+      <button class="rail-btn" title="AI Chat"><span>AI</span><small>AI Chat</small></button>
       <button class="rail-btn" title="Chart"><span>▧</span><small>Chart</small></button>
       <button class="rail-btn" title="Scanner"><span>▦</span><small>Scanner</small></button>
       <button class="rail-btn" title="Capital"><span>$</span><small>Capital</small></button>
@@ -99,14 +100,22 @@
             <p class="reason" id="selectedReason"><b class="ok-text">Structure is bullish</b>, but current price is late. Wait for pullback into clean zone or H1 compression break. No mid-price entry.</p>
           </section>
 
+          <section class="panel ai-chat-panel">
+            <h3>Ask Jack AI</h3>
+            <div class="chat-box" id="chatBox">
+              <div class="msg ai">Ask me about the selected symbol, risk, setup quality, or why the system says wait.</div>
+              <div class="msg user">Should I trade GBPJPY now?</div>
+              <div class="msg ai">Not yet. Score is strong, but entry is late. Wait for pullback or compression break.</div>
+            </div>
+            <form class="ai-chat-form" id="aiChatForm">
+              <input id="aiChatInput" autocomplete="off" placeholder="Ask AI: why wait, risk size, trade plan..." />
+              <button type="submit">Ask</button>
+            </form>
+          </section>
+
           <section class="panel mistakes">
             <h3>Mistake Memory</h3>
             <ul><li>Do not chase after breakout candle.</li><li>No entry if stop is too large for account stage.</li><li>Do not enter before high-impact news.</li><li>After loss, reduce risk instead of attacking.</li></ul>
-          </section>
-
-          <section class="panel">
-            <h3>Rule Queue</h3>
-            <div class="rule-card">Suggested rule: if price is extended after breakout, downgrade ATTACK to WAIT unless pullback trigger appears.<br><br>Status: pending user approval.</div>
           </section>
         </aside>
       </section>
