@@ -7,7 +7,8 @@ export default async function handler(req, res) {
 
     if (!process.env.OPENAI_API_KEY) {
       return res.status(200).json({
-        answer: 'GPT 还没有连接。请先在 Vercel 加 OPENAI_API_KEY。'
+        answer: 'GPT 还没有连接。请先在 Vercel 加 OPENAI_API_KEY。',
+        usage: null
       });
     }
 
@@ -25,6 +26,7 @@ export default async function handler(req, res) {
 
     const userPrompt = `当前品种：${symbol || '未选择'}\n当前系统资料：${JSON.stringify(context || {})}\n用户问题：${question}`;
 
+    const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -32,7 +34,7 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+        model,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
@@ -45,12 +47,29 @@ export default async function handler(req, res) {
     const data = await response.json();
     if (!response.ok) {
       const msg = data?.error?.message || '未知错误';
-      return res.status(200).json({ answer: 'GPT API 连接失败：' + msg });
+      return res.status(200).json({ answer: 'GPT API 连接失败：' + msg, usage: null });
     }
 
     const answer = data?.choices?.[0]?.message?.content || 'GPT 没有返回内容。';
-    return res.status(200).json({ answer });
+    const usageRaw = data?.usage || {};
+    const inputTokens = usageRaw.prompt_tokens || 0;
+    const outputTokens = usageRaw.completion_tokens || 0;
+    const totalTokens = usageRaw.total_tokens || inputTokens + outputTokens;
+    const cost = model.includes('4o-mini')
+      ? (inputTokens / 1000000) * 0.15 + (outputTokens / 1000000) * 0.60
+      : (inputTokens / 1000000) * 1.00 + (outputTokens / 1000000) * 3.00;
+
+    return res.status(200).json({
+      answer,
+      usage: {
+        model,
+        inputTokens,
+        outputTokens,
+        totalTokens,
+        estimatedCost: Number(cost.toFixed(6))
+      }
+    });
   } catch (error) {
-    return res.status(200).json({ answer: '系统连接 GPT 时出错：' + String(error?.message || error) });
+    return res.status(200).json({ answer: '系统连接 GPT 时出错：' + String(error?.message || error), usage: null });
   }
 }
