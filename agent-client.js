@@ -52,14 +52,14 @@ function loadScriptOnce(id, src) {
   s.src = src;
   document.body.appendChild(s);
 }
-function loadMultiChartPanel() { loadScriptOnce('multiChartLoader', 'multi-chart.js?v=57'); }
-function loadLevelsPanel() { /* V5.4.3: disabled. symbol-sync-v54 controls Advanced S/R. */ }
-function loadPaperTradeLoop() { loadScriptOnce('paperTradeLoader', 'paper-trade.js?v=57'); }
-function loadPaperTradePage() { loadScriptOnce('paperPageLoader', 'paper-page.js?v=57'); }
-function loadStrategyResearchEngine() { loadScriptOnce('strategyEngineLoader', 'strategy-engine.js?v=57'); }
-function loadCloudSyncClient() { loadScriptOnce('cloudSyncLoader', 'cloud-sync.js?v=57'); }
-function loadRunnerStatusDashboard() { loadScriptOnce('runnerStatusLoader', 'runner-status.js?v=57'); }
-function loadResearchRoom() { loadScriptOnce('researchRoomLoader', 'research-room.js?v=57'); }
+function loadMultiChartPanel() { loadScriptOnce('multiChartLoader', 'multi-chart.js?v=58'); }
+function loadLevelsPanel() { loadScriptOnce('levelsPanelLoader', 'levels-panel.js?v=58'); }
+function loadPaperTradeLoop() { loadScriptOnce('paperTradeLoader', 'paper-trade.js?v=58'); }
+function loadPaperTradePage() { loadScriptOnce('paperPageLoader', 'paper-page.js?v=58'); }
+function loadStrategyResearchEngine() { loadScriptOnce('strategyEngineLoader', 'strategy-engine.js?v=58'); }
+function loadCloudSyncClient() { loadScriptOnce('cloudSyncLoader', 'cloud-sync.js?v=58'); }
+function loadRunnerStatusDashboard() { loadScriptOnce('runnerStatusLoader', 'runner-status.js?v=58'); }
+function loadResearchRoom() { loadScriptOnce('researchRoomLoader', 'research-room.js?v=58'); }
 function enableAgentClient() {
   loadMultiChartPanel(); loadLevelsPanel(); loadPaperTradeLoop(); loadPaperTradePage(); loadStrategyResearchEngine(); loadCloudSyncClient(); loadRunnerStatusDashboard(); loadResearchRoom(); improveChatReadability();
   const form = document.getElementById('aiChatForm');
