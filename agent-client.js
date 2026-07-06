@@ -104,7 +104,16 @@ function updateUsageBubble(usage, state) {
   bubble.title = '本次：' + usage.totalTokens + ' tokens\nInput: ' + usage.inputTokens + '\nOutput: ' + usage.outputTokens + '\n估算：$' + Number(usage.estimatedCost || 0).toFixed(4) + '\n本月：$' + month.toFixed(2) + ' / $10';
 }
 
+function loadMultiChartPanel() {
+  if (document.getElementById('multiChartLoader')) return;
+  const s = document.createElement('script');
+  s.id = 'multiChartLoader';
+  s.src = 'multi-chart.js';
+  document.body.appendChild(s);
+}
+
 function enableAgentClient() {
+  loadMultiChartPanel();
   improveChatReadability();
 
   const form = document.getElementById('aiChatForm');
