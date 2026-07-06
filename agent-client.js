@@ -1,15 +1,9 @@
 async function callAgent(question, symbol, context) {
   try {
-    const response = await fetch('/api/ask', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question, symbol, context })
-    });
+    const response = await fetch('/api/ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question, symbol, context }) });
     const data = await response.json();
     return { answer: data.answer || '没有收到 AI 回答。', usage: data.usage || null };
-  } catch (error) {
-    return { answer: '连接 GPT Agent 失败。请检查 Vercel 部署和 OPENAI_API_KEY。', usage: null };
-  }
+  } catch (error) { return { answer: '连接 GPT Agent 失败。请检查 Vercel 部署和 OPENAI_API_KEY。', usage: null }; }
 }
 function fallbackChineseAnswer(question, symbol, context) {return symbol + ' 中文检查：\n' +'1. 当前判断：' + (context.decision || 'WAIT') + '\n' +'2. 风险：' + (context.risk || '-') + '\n' +'3. 警告：' + (context.warning || '-') + '\n' +'4. 结构：' + (context.core || '-') + '\n' +'5. 结论：先等清楚位置，不追价，有客观止损才准备交易计划。';}
 function improveChatReadability() {const style = document.createElement('style');style.textContent = `.ai-chat-panel{min-height:430px!important;}.chat-box{height:300px!important;max-height:300px!important;overflow-y:auto!important;padding:12px!important;}.chat-box .msg{font-size:14px!important;line-height:1.65!important;white-space:pre-wrap!important;letter-spacing:.01em!important;}.chat-box .msg.ai{padding:14px!important;border-radius:10px!important;}.chat-box .msg.user{font-size:13px!important;}.ai-chat-form{grid-template-columns:1fr 58px 52px!important;}.ai-chat-form input{font-size:14px!important;height:42px!important;}.ai-chat-form button{height:42px!important;}.usage-bubble{height:42px;border:1px solid #263442;background:#070b10;color:#8b98a8;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:800;cursor:help;white-space:nowrap;}.usage-bubble.thinking{color:#6cb6ff;border-color:#36506b;}.usage-bubble.ok{color:#7ff0ad;border-color:#2f6848;background:#0d2418;}.usage-bubble.warn{color:#f0b35a;border-color:#574018;background:#2c210f;}.usage-bubble.err{color:#ff8a94;border-color:#5a1c25;background:#2b1014;}.journal-list{max-height:150px!important;overflow-y:auto!important;}`;document.head.appendChild(style);}
@@ -28,8 +22,9 @@ function loadPaperTradePage() { loadScriptOnce('paperPageLoader', 'paper-page.js
 function loadStrategyResearchEngine() { loadScriptOnce('strategyEngineLoader', 'strategy-engine.js'); }
 function loadCloudSyncClient() { loadScriptOnce('cloudSyncLoader', 'cloud-sync.js'); }
 function loadRunnerStatusDashboard() { loadScriptOnce('runnerStatusLoader', 'runner-status.js'); }
+function loadResearchRoom() { loadScriptOnce('researchRoomLoader', 'research-room.js'); }
 function enableAgentClient() {
-  loadMultiChartPanel();loadLevelsPanel();loadPaperTradeLoop();loadPaperTradePage();loadStrategyResearchEngine();loadCloudSyncClient();loadRunnerStatusDashboard();improveChatReadability();
+  loadMultiChartPanel();loadLevelsPanel();loadPaperTradeLoop();loadPaperTradePage();loadStrategyResearchEngine();loadCloudSyncClient();loadRunnerStatusDashboard();loadResearchRoom();improveChatReadability();
   const form = document.getElementById('aiChatForm');const input = document.getElementById('aiChatInput');if (!form || !input) return;
   const bubble = ensureUsageBubble(form);const month = getMonthlyCost();bubble.textContent = '◔ $' + month.toFixed(2);bubble.title = '本月估算：$' + month.toFixed(2) + ' / $10';
   input.placeholder = '中文问 Jack AI...';const title = document.querySelector('.ai-chat-panel h3');if (title) title.textContent = '问 Jack AI';const first = document.querySelector('#chatBox .msg.ai');if (first) first.textContent = '中文 GPT Agent 已接入。直接用中文问我。';
