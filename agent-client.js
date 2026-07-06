@@ -21,7 +21,31 @@ function fallbackChineseAnswer(question, symbol, context) {
     '5. 结论：先等清楚位置，不追价，有客观止损才准备交易计划。';
 }
 
+function improveChatReadability() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .ai-chat-panel{min-height:430px!important;}
+    .chat-box{height:300px!important;max-height:300px!important;overflow-y:auto!important;padding:12px!important;}
+    .chat-box .msg{font-size:14px!important;line-height:1.65!important;white-space:pre-wrap!important;letter-spacing:.01em!important;}
+    .chat-box .msg.ai{padding:14px!important;border-radius:10px!important;}
+    .chat-box .msg.user{font-size:13px!important;}
+    .ai-chat-form input{font-size:14px!important;height:42px!important;}
+    .ai-chat-form button{height:42px!important;}
+    .journal-list{max-height:150px!important;overflow-y:auto!important;}
+  `;
+  document.head.appendChild(style);
+}
+
+function formatAgentAnswer(text) {
+  return String(text || '')
+    .replace(/\*\*/g, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
 function enableAgentClient() {
+  improveChatReadability();
+
   const form = document.getElementById('aiChatForm');
   const input = document.getElementById('aiChatInput');
   if (!form || !input) return;
@@ -50,10 +74,13 @@ function enableAgentClient() {
       answer = fallbackChineseAnswer(question, currentSymbol, context);
     }
 
+    answer = formatAgentAnswer(answer);
+
     const box = document.getElementById('chatBox');
     const messages = box ? box.querySelectorAll('.msg.ai') : [];
     const last = messages.length ? messages[messages.length - 1] : null;
     if (last) last.textContent = answer;
+    if (box) box.scrollTop = box.scrollHeight;
 
     autoJournal('GPT AGENT', currentSymbol + ' · ' + question + ' · ' + answer);
   }, true);
