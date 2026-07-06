@@ -26,7 +26,7 @@ function replaceSelectedSymbolPanel(){
   if(!panel)return;
   panel.classList.add('levels-panel');
   panel.innerHTML=`<h3>ADVANCED S/R <button class="levels-refresh" id="levelsRefresh">Refresh</button></h3><div class="levels-price" id="levelsPrice">Loading levels...</div><div class="levels-table" id="levelsGrid"></div><div class="levels-note" id="levelsNote">等待行情 API。</div>`;
-  document.getElementById('levelsRefresh')?.addEventListener('click',()=>loadLevels(currentSymbol||'GBPJPY'));
+  document.getElementById('levelsRefresh')?.addEventListener('click',()=>loadLevels(window.currentSymbol||currentSymbol||'GBPJPY'));
 }
 function fmtLevel(n){ const x=Number(n); if(!Number.isFinite(x)||x===0)return '-'; return Math.abs(x)>=10 ? x.toFixed(2) : x.toFixed(4); }
 function pipSize(symbol){ const s=String(symbol||'').toUpperCase(); if(s.includes('JPY'))return 0.01; if(s==='XAUUSD')return 1; if(s==='DXY'||s==='US10Y')return 0.01; return 0.0001; }
@@ -41,22 +41,29 @@ function abuLevelSummary(data){
 }
 function renderFallbackLevels(symbol, reason){
   const price=document.getElementById('levelsPrice'); const grid=document.getElementById('levelsGrid'); const note=document.getElementById('levelsNote');
-  const s=(typeof setups!=='undefined' && setups[symbol]) ? setups[symbol] : {}; const p=Number(s.price);
-  if(price) price.textContent=`${symbol} · ${Number.isFinite(p)?(Math.abs(p)>=10?p.toFixed(2):p.toFixed(4)):'-'} · fallback`;
-  if(grid){ grid.innerHTML='<div class="levels-head">TF</div><div class="levels-head">Near S</div><div class="levels-head">Next R</div><div class="levels-head">Status</div>'; ['1H','4H','1W','1M'].forEach(tf=>grid.insertAdjacentHTML('beforeend',`<div class="levels-cell level-tf">${tf}</div><div class="levels-cell">-</div><div class="levels-cell">-</div><div class="levels-cell"><span class="level-status level-middle">WAIT</span></div>`)); }
-  if(note) note.textContent=`Fallback: ${reason || 'Levels API 暂时不能读取'}。先看卡片 setup：${s.warning || 'No chase'}。`;
+  if(price) price.textContent=`${symbol} · DATA WARNING · TradingView only`;
+  if(grid){ grid.innerHTML='<div class="levels-head">TF</div><div class="levels-head">Near S</div><div class="levels-head">Next R</div><div class="levels-head">Status</div>'; ['1H','4H','1W','1M'].forEach(tf=>grid.insertAdjacentHTML('beforeend',`<div class="levels-cell level-tf">${tf}</div><div class="levels-cell">-</div><div class="levels-cell">-</div><div class="levels-cell"><span class="level-status level-middle">NO DATA</span></div>`)); }
+  if(note) note.textContent=`Live S/R unavailable: ${reason || 'unknown'}。先看 TradingView 图，不用假支撑阻力判断。`;
 }
+function validLevelsData(data){ return data && data.symbol && Number.isFinite(Number(data.price)) && data.levels && (data.levels.H1 || data.levels.H4 || data.levels.W1 || data.levels.M1); }
 async function loadLevels(symbol){
   const price=document.getElementById('levelsPrice'); const grid=document.getElementById('levelsGrid'); const note=document.getElementById('levelsNote'); if(!grid)return;
-  price.textContent=`${symbol} · loading S/R...`; grid.innerHTML=''; note.textContent='正在计算关键支撑阻力...';
+  price.textContent=`${symbol} · loading live S/R...`; grid.innerHTML=''; note.textContent='正在读取 live levels...';
   try{
-    const r=await fetch('/api/levels?symbol='+encodeURIComponent(symbol)); if(!r.ok) throw new Error('HTTP '+r.status); const data=await r.json(); if(!data || data.ok===false || !data.levels) throw new Error(data?.error || 'No levels data');
-    const livePrice=Number(data.price); if(!Number.isFinite(livePrice)) throw new Error('No live price'); if(typeof window.updatePairLivePrice==='function') window.updatePairLivePrice(symbol, livePrice, data);
-    price.textContent=`${data.symbol} · ${fmtLevel(livePrice)} · ${data.source}`; const labels={H1:'1H',H4:'4H',W1:'1W',M1:'1M'};
+    const url='/api/levels?symbol='+encodeURIComponent(symbol)+'&_t='+Date.now();
+    const r=await fetch(url,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
+    const text=await r.text();
+    let data; try{data=JSON.parse(text);}catch{throw new Error('API returned non JSON');}
+    if(!r.ok) throw new Error(data?.error || ('HTTP '+r.status));
+    if(!validLevelsData(data)) throw new Error(data?.error || 'No valid live levels');
+    const livePrice=Number(data.price);
+    if(typeof window.updatePairLivePrice==='function') window.updatePairLivePrice(symbol, livePrice, data);
+    price.textContent=`${data.symbol} · ${fmtLevel(livePrice)} · LIVE ${data.source || 'levels'}`;
+    const labels={H1:'1H',H4:'4H',W1:'1W',M1:'1M'};
     grid.innerHTML='<div class="levels-head">TF</div><div class="levels-head">Near S</div><div class="levels-head">Next R</div><div class="levels-head">Status</div>';
     ['H1','H4','W1','M1'].forEach(tf=>{ const l=data.levels?.[tf]; if(!l)return; grid.insertAdjacentHTML('beforeend',`<div class="levels-cell level-tf">${labels[tf]}</div><div class="levels-cell">${levelWithDistance(data.symbol,livePrice,l.nearestSupport ?? l.support)}</div><div class="levels-cell">${levelWithDistance(data.symbol,livePrice,l.nextResistance ?? l.resistance)}</div><div class="levels-cell"><span class="level-status ${statusClass(l.status)}" title="${l.status}">${shortStatus(l.status)}</span></div>`); });
     note.textContent='ABU: '+abuLevelSummary(data);
   }catch(e){ renderFallbackLevels(symbol, e.message); }
 }
 window.loadLevels=loadLevels;
-(function(){ injectLevelsStyle(); replaceSelectedSymbolPanel(); const oldSelect=window.selectSymbol; if(typeof oldSelect==='function'){ window.selectSymbol=function(symbol){ oldSelect(symbol); loadLevels(symbol); }; } setTimeout(()=>loadLevels(window.currentSymbol||currentSymbol||'GBPJPY'),500); })();
+(function(){ injectLevelsStyle(); replaceSelectedSymbolPanel(); const oldSelect=window.selectSymbol; if(typeof oldSelect==='function'&&!oldSelect.__levelsLiveWrapped){ const wrapped=function(symbol){ oldSelect(symbol); loadLevels(symbol); }; wrapped.__levelsLiveWrapped=true; window.selectSymbol=wrapped; } setTimeout(()=>loadLevels(window.currentSymbol||currentSymbol||'GBPJPY'),500); })();
