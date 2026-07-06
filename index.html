@@ -10,65 +10,42 @@
 </head>
 <body>
   <div class="app-frame">
-    <nav class="side-rail" aria-label="Future feature navigation">
+    <nav class="side-rail" aria-label="Navigation">
       <button class="rail-btn active" title="Dashboard"><span>⌂</span><small>Dashboard</small></button>
-      <button class="rail-btn" title="AI Chat"><span>AI</span><small>AI Chat</small></button>
+      <button class="rail-btn" title="AI"><span>AI</span><small>AI</small></button>
       <button class="rail-btn" title="Chart"><span>▧</span><small>Chart</small></button>
       <button class="rail-btn" title="Scanner"><span>▦</span><small>Scanner</small></button>
       <button class="rail-btn" title="Capital"><span>$</span><small>Capital</small></button>
       <button class="rail-btn" title="Risk"><span>◇</span><small>Risk</small></button>
       <button class="rail-btn" title="Journal"><span>✎</span><small>Journal</small></button>
-      <button class="rail-btn" title="Mistakes"><span>!</span><small>Mistakes</small></button>
       <button class="rail-btn" title="Rules"><span>⚙</span><small>Rules</small></button>
-      <button class="rail-btn" title="News"><span>◆</span><small>News</small></button>
-      <button class="rail-btn" title="Settings"><span>⋯</span><small>Settings</small></button>
     </nav>
 
     <main class="terminal-shell">
-      <header class="topbar">
-        <div><b>JACK AI CAPITAL OS</b> // V1.8 Daily Workflow</div>
-        <div>Chart: <b>TradingView</b> · AI: <b>Mock</b> · Journal: <b>Auto</b> · Auto-trade: <b>OFF</b></div>
-      </header>
-
-      <section class="heatmap">
-        <article class="tile good selected" data-symbol="GBPJPY"><div class="tile-top"><div><div class="symbol">GBPJPY</div><div class="grade">A+ setup</div></div><div class="score">18/20</div></div><div class="action"><b>WAIT</b><span>No chase</span></div></article>
-        <article class="tile watch" data-symbol="USDJPY"><div class="tile-top"><div><div class="symbol">USDJPY</div><div class="grade">A setup</div></div><div class="score">14/20</div></div><div class="action"><b>WATCH</b><span>Extended</span></div></article>
-        <article class="tile neutral" data-symbol="XAUUSD"><div class="tile-top"><div><div class="symbol">XAUUSD</div><div class="grade">Paper</div></div><div class="score">13/20</div></div><div class="action"><b>PAPER</b><span>USD conflict</span></div></article>
-        <article class="tile bad" data-symbol="GBPUSD"><div class="tile-top"><div><div class="symbol">GBPUSD</div><div class="grade">Reject</div></div><div class="score">08/20</div></div><div class="action"><b>REJECT</b><span>No edge</span></div></article>
-        <article class="tile neutral" data-symbol="EURUSD"><div class="tile-top"><div><div class="symbol">EURUSD</div><div class="grade">Neutral</div></div><div class="score">10/20</div></div><div class="action"><b>WAIT</b><span>Range</span></div></article>
-        <article class="tile good" data-symbol="AUDJPY"><div class="tile-top"><div><div class="symbol">AUDJPY</div><div class="grade">A setup</div></div><div class="score">16/20</div></div><div class="action"><b>WATCH</b><span>Clean zone</span></div></article>
-        <article class="tile watch" data-symbol="USDCHF"><div class="tile-top"><div><div class="symbol">USDCHF</div><div class="grade">Watch</div></div><div class="score">12/20</div></div><div class="action"><b>WAIT</b><span>No trigger</span></div></article>
-        <article class="tile good" data-symbol="DXY"><div class="tile-top"><div><div class="symbol">DXY</div><div class="grade">Macro</div></div><div class="score">15/20</div></div><div class="action"><b>STRONG</b><span>USD check</span></div></article>
-        <article class="tile watch" data-symbol="US10Y"><div class="tile-top"><div><div class="symbol">US10Y</div><div class="grade">Macro</div></div><div class="score">14/20</div></div><div class="action"><b>WATCH</b><span>Gold risk</span></div></article>
-        <article class="tile bad" data-symbol="EURGBP"><div class="tile-top"><div><div class="symbol">EURGBP</div><div class="grade">Weak</div></div><div class="score">07/20</div></div><div class="action"><b>REJECT</b><span>No space</span></div></article>
-      </section>
+      <header class="topbar"><div><b>JACK AI CAPITAL OS</b> // V5.7 Clean</div><div>Chart: <b>TradingView</b> · Data: <b>/api/levels</b> · Auto-trade: <b>OFF</b></div></header>
+      <section class="heatmap"></section>
 
       <section class="main">
         <aside class="left">
-          <section class="panel"><h3>Capital / Risk Mode</h3><div class="kv"><span>Equity</span><b id="accountEquity">$500</b></div><div class="kv"><span>Stage</span><b>$500 → $2K</b></div><div class="kv"><span>Today</span><b>0R</b></div><div class="kv"><span>Week</span><b>+2.4R</b></div><div class="kv"><span>Drawdown</span><b>-3.2%</b></div><div class="kv"><span>Max risk now</span><b id="accountMaxRisk">4%</b></div><div style="margin-top:10px"><span class="mode-pill">● DEFENSE MODE</span></div></section>
-          <section class="panel"><h3>Abu Scanner Table</h3><div class="scanner-list"><div class="scan-row"><b>GBPJPY</b><span class="scan-score">18</span><span class="scan-state">A+ · wait pullback</span></div><div class="scan-row"><b>AUDJPY</b><span class="scan-score">16</span><span class="scan-state">A · clean zone</span></div><div class="scan-row"><b>DXY</b><span class="scan-score">15</span><span class="scan-state">Strong USD</span></div><div class="scan-row"><b>USDJPY</b><span class="scan-score">14</span><span class="scan-state">Watch · extended</span></div><div class="scan-row"><b>XAUUSD</b><span class="scan-score">13</span><span class="scan-state">Paper · yields risk</span></div><div class="scan-row"><b>EURUSD</b><span class="scan-score">10</span><span class="scan-state">Neutral range</span></div><div class="scan-row"><b>GBPUSD</b><span class="scan-score">08</span><span class="scan-state">Reject · no edge</span></div></div></section>
+          <section class="panel"><h3>Capital / Risk Mode</h3><div class="kv"><span>Equity</span><b id="accountEquity">$500</b></div><div class="kv"><span>Stage</span><b>$500 → $2K</b></div><div class="kv"><span>Today</span><b>0R</b></div><div class="kv"><span>Week</span><b>+2.4R</b></div><div class="kv"><span>Drawdown</span><b>-3.2%</b></div><div class="kv"><span>Max risk now</span><b id="accountMaxRisk">4%</b></div></section>
+          <section class="panel"><h3>Advanced S/R</h3><div class="levels-price" id="levelsPrice">Loading live levels...</div><div class="levels-table" id="levelsGrid"></div><div class="levels-note" id="levelsNote">/api/levels live data</div><button class="levels-refresh" id="levelsRefresh">Refresh</button></section>
         </aside>
 
         <section class="panel chart-panel"><div class="chart-head"><div><strong id="chartSymbol">GBPJPY</strong> · Live TradingView Chart · display only</div><div class="tf"><span>15m</span><span class="active">1H</span><span>4H</span><span>1D</span></div></div><div class="chart tv-chart-wrap"><div id="tv-chart" class="tv-chart"><div class="tv-loading">Loading TradingView...</div></div></div></section>
 
         <aside class="right">
-          <section class="panel"><h3>Selected Symbol AI Panel</h3><div class="selected-title"><div><div class="big" id="selectedSymbol">GBPJPY</div><div id="selectedName" style="color:var(--muted);font-size:12px">British Pound / Japanese Yen</div></div><span class="badge" id="setupBadge">A+ SETUP</span></div><div class="decision-grid"><div class="mini"><span>Decision</span><b id="selectedDecision" style="color:var(--amber)">WAIT</b></div><div class="mini"><span>Score</span><b id="selectedScore">18/20</b></div><div class="mini"><span>Risk allowed</span><b id="selectedRisk">4%</b></div><div class="mini"><span>Warning</span><b id="selectedWarning" class="danger-text">NO CHASE</b></div></div><p class="reason" id="selectedReason">Structure is bullish, but current price is late. Wait for pullback into clean zone or H1 compression break. No mid-price entry.</p></section>
-          <section class="panel ai-chat-panel"><h3>Ask Jack AI</h3><div class="chat-box" id="chatBox"><div class="msg ai">Ask me about selected symbol, risk, setup quality, or why the system says wait. Mock AI is running today.</div></div><form class="ai-chat-form" id="aiChatForm"><input id="aiChatInput" autocomplete="off" placeholder="Ask AI: why wait, risk size, trade plan..." /><button type="submit">Ask</button></form></section>
-          <section class="panel workflow-panel"><h3>Daily Workflow</h3><div class="workflow-buttons"><button data-workflow="scan">1 Run Daily Scan</button><button data-workflow="plan">2 Generate Trade Plan</button><button data-workflow="risk">3 Risk Check</button><button data-workflow="decision">4 Save Final Decision</button></div><select id="finalDecision"><option>WAIT</option><option>WATCH</option><option>TRADE PLAN READY</option><option>REJECT</option><option>NO TRADE TODAY</option></select><div class="workflow-output" id="workflowOutput">Daily workflow ready. Start from Run Daily Scan.</div></section>
+          <section class="panel"><h3>Selected Symbol</h3><div class="selected-title"><div><div class="big" id="selectedSymbol">GBPJPY</div><div id="selectedName" style="color:var(--muted);font-size:12px">British Pound / Japanese Yen</div></div><span class="badge" id="setupBadge">A+ SETUP</span></div><div class="decision-grid"><div class="mini"><span>Decision</span><b id="selectedDecision">WAIT</b></div><div class="mini"><span>Score</span><b id="selectedScore">18/20</b></div><div class="mini"><span>Risk allowed</span><b id="selectedRisk">4%</b></div><div class="mini"><span>Warning</span><b id="selectedWarning">NO CHASE</b></div></div></section>
+          <section class="panel ai-chat-panel"><h3>Jack AI Daily Brief</h3><div class="chat-box" id="chatBox"><div class="msg ai">Loading live brief...</div></div><form class="ai-chat-form" id="aiChatForm"><input id="aiChatInput" autocomplete="off" placeholder="Ask later..." /><button type="submit">Ask</button></form></section>
+          <section class="panel workflow-panel"><h3>Daily Workflow</h3><div class="workflow-output" id="workflowOutput">Clean home controller loaded. Paper/Research modules are temporarily disabled on home.</div></section>
         </aside>
       </section>
 
-      <section class="bottom-grid"><section class="panel"><h3>Risk Calculator</h3><form class="calc-form" id="riskForm"><input id="equityInput" type="number" value="500" min="1" placeholder="Equity" /><input id="riskInput" type="number" value="4" min="0" step="0.1" placeholder="Risk %" /><input id="stopInput" type="number" value="50" min="1" placeholder="Stop pips" /><button type="submit">Calc</button></form><div class="calc-result" id="riskResult">Risk amount: $20.00 · Approx pip value: $0.40 · 5R target: $100.00</div></section><section class="panel trade-plan"><h3>Trade Plan</h3><b id="planTitle">GBPJPY Plan:</b> <span id="tradePlanText">Wait for pullback / compression break. Entry only if small stop is possible.</span></section><section class="panel journal-panel"><h3>Journal / Snowball</h3><form class="journal-form" id="journalForm"><input id="journalInput" autocomplete="off" placeholder="Save note: setup, emotion, mistake, lesson..." /><button type="submit">Save</button></form><div class="journal-list" id="journalList"></div></section></section>
+      <section class="bottom-grid"><section class="panel"><h3>Risk Calculator</h3><form class="calc-form" id="riskForm"><input id="equityInput" type="number" value="500" min="1" placeholder="Equity" /><input id="riskInput" type="number" value="4" min="0" step="0.1" placeholder="Risk %" /><input id="stopInput" type="number" value="50" min="1" placeholder="Stop pips" /><button type="submit">Calc</button></form><div class="calc-result" id="riskResult">Risk amount: $20.00 · Approx pip value: $0.40 · 5R target: $100.00</div></section><section class="panel trade-plan"><h3>Abu Pre-Decision Gate</h3><div class="gate-result" id="gateResult">Use live S/R first. No chase. Wait for key zone and small stop.</div></section><section class="panel journal-panel"><h3>Journal / Snowball</h3><div class="journal-list" id="journalList"><div class="journal-item">Clean rebuild: home uses /api/levels as single live source.</div></div></section></section>
     </main>
   </div>
 
   <script src="https://s3.tradingview.com/tv.js"></script>
-  <script src="script.js?v=60"></script>
-  <script src="agent-client.js?v=60"></script>
-  <script src="runner-status.js?v=60"></script>
-  <script src="research-room.js?v=60"></script>
-  <script src="command-center-v53.js?v=60"></script>
-  <script src="symbol-sync-v54.js?v=60"></script>
-  <script src="price-sync-v56.js?v=60"></script>
+  <script src="script.js?v=70"></script>
+  <script src="home-controller.js?v=70"></script>
 </body>
 </html>
