@@ -6,6 +6,7 @@
   <title>Jack AI Capital OS</title>
   <link rel="stylesheet" href="rail.css" />
   <link rel="stylesheet" href="v13.css" />
+  <link rel="stylesheet" href="workflow.css" />
 </head>
 <body>
   <div class="app-frame">
@@ -25,8 +26,8 @@
 
     <main class="terminal-shell">
       <header class="topbar">
-        <div><b>JACK AI CAPITAL OS</b> // Today MVP Running</div>
-        <div>Chart: <b>TradingView</b> · AI: <b>Mock</b> · Journal: <b>Local</b> · Auto-trade: <b>OFF</b></div>
+        <div><b>JACK AI CAPITAL OS</b> // V1.8 Daily Workflow</div>
+        <div>Chart: <b>TradingView</b> · AI: <b>Mock</b> · Journal: <b>Auto</b> · Auto-trade: <b>OFF</b></div>
       </header>
 
       <section class="heatmap">
@@ -103,9 +104,22 @@
             </form>
           </section>
 
-          <section class="panel mistakes">
-            <h3>Mistake Memory</h3>
-            <ul><li>Do not chase after breakout candle.</li><li>No entry if stop is too large for account stage.</li><li>Do not enter before high-impact news.</li><li>After loss, reduce risk instead of attacking.</li></ul>
+          <section class="panel workflow-panel">
+            <h3>Daily Workflow</h3>
+            <div class="workflow-buttons">
+              <button data-workflow="scan">1 Run Daily Scan</button>
+              <button data-workflow="plan">2 Generate Trade Plan</button>
+              <button data-workflow="risk">3 Risk Check</button>
+              <button data-workflow="decision">4 Save Final Decision</button>
+            </div>
+            <select id="finalDecision">
+              <option>WAIT</option>
+              <option>WATCH</option>
+              <option>TRADE PLAN READY</option>
+              <option>REJECT</option>
+              <option>NO TRADE TODAY</option>
+            </select>
+            <div class="workflow-output" id="workflowOutput">Daily workflow ready. Start from Run Daily Scan.</div>
           </section>
         </aside>
       </section>
