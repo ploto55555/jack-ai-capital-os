@@ -61,8 +61,9 @@ function selectSymbol(symbol) {
   document.getElementById("selectedWarning").textContent = setup.warning;
   document.getElementById("selectedReason").textContent = setup.reason;
   document.getElementById("planTitle").textContent = `${symbol} Plan:`;
-  document.getElementById("tradePlanText").textContent = setup.decision === "REJECT" ? "No trade. Record why this setup is rejected." : "Wait for clean zone, define stop first, check target space, then decide risk.";
+  document.getElementById("tradePlanText").textContent = setup.decision === "REJECT" ? "No trade. AI logs rejection reason." : "AI watches setup state. User decides execution only after clean trigger.";
   renderTradingView(symbol);
+  autoJournal("SCAN", buildAutoJournalText(symbol, "Symbol selected / scanner review"), true);
 }
 
 function addChatMessage(type, text) {
@@ -107,6 +108,7 @@ function calculateRisk() {
   const maxRisk = document.getElementById("accountMaxRisk");
   if (eq) eq.textContent = `$${equity.toFixed(0)}`;
   if (maxRisk) maxRisk.textContent = `${risk}%`;
+  autoJournal("RISK", `${currentSymbol} · AI risk check · equity $${equity.toFixed(0)} · risk ${risk}% · stop ${stop} pips · max loss $${riskAmount.toFixed(2)} · 5R $${target5R.toFixed(2)}`);
 }
 
 function getJournal() {
@@ -114,14 +116,30 @@ function getJournal() {
 }
 
 function saveJournal(items) {
-  localStorage.setItem("jackCapitalJournal", JSON.stringify(items.slice(0, 12)));
+  localStorage.setItem("jackCapitalJournal", JSON.stringify(items.slice(0, 20)));
+}
+
+function buildAutoJournalText(symbol, trigger) {
+  const setup = setups[symbol] || setups.GBPJPY;
+  return `${symbol} · ${trigger} · decision ${setup.decision} · score ${setup.score} · risk ${setup.risk} · warning ${setup.warning} · AI note: ${setup.reason}`;
+}
+
+function autoJournal(type, text, replaceSameSymbol = false) {
+  const stamp = new Date().toLocaleString();
+  let items = getJournal();
+  if (replaceSameSymbol) {
+    items = items.filter(item => !(item.includes(`· ${currentSymbol} ·`) && item.includes("SCAN")));
+  }
+  items.unshift(`${stamp} · ${type} · ${text}`);
+  saveJournal(items);
+  renderJournal();
 }
 
 function renderJournal() {
   const list = document.getElementById("journalList");
   if (!list) return;
   const items = getJournal();
-  list.innerHTML = items.length ? "" : "<div class='journal-item'>No journal yet. Save your first setup note.</div>";
+  list.innerHTML = items.length ? "" : "<div class='journal-item'>AI journal is waiting. Select a symbol or ask AI.</div>";
   items.forEach(item => {
     const div = document.createElement("div");
     div.className = "journal-item";
@@ -139,8 +157,10 @@ if (chatForm && chatInput) {
     event.preventDefault();
     const question = chatInput.value.trim();
     if (!question) return;
+    const answer = mockAiAnswer(question);
     addChatMessage("user", question);
-    addChatMessage("ai", mockAiAnswer(question));
+    addChatMessage("ai", answer);
+    autoJournal("AI CHAT", `${currentSymbol} · user asked: ${question} · AI answered: ${answer}`);
     chatInput.value = "";
   });
 }
@@ -151,19 +171,16 @@ if (riskForm) riskForm.addEventListener("submit", event => { event.preventDefaul
 const journalForm = document.getElementById("journalForm");
 const journalInput = document.getElementById("journalInput");
 if (journalForm && journalInput) {
+  journalInput.placeholder = "Optional: add your note. AI already writes journal automatically.";
   journalForm.addEventListener("submit", event => {
     event.preventDefault();
     const note = journalInput.value.trim();
     if (!note) return;
-    const stamp = new Date().toLocaleString();
-    const items = getJournal();
-    items.unshift(`${stamp} · ${currentSymbol} · ${note}`);
-    saveJournal(items);
+    autoJournal("USER NOTE", `${currentSymbol} · ${note}`);
     journalInput.value = "";
-    renderJournal();
   });
 }
 
-calculateRisk();
 renderJournal();
 selectSymbol("GBPJPY");
+calculateRisk();
