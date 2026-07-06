@@ -27,8 +27,9 @@ function loadPaperTradeLoop() { loadScriptOnce('paperTradeLoader', 'paper-trade.
 function loadPaperTradePage() { loadScriptOnce('paperPageLoader', 'paper-page.js'); }
 function loadStrategyResearchEngine() { loadScriptOnce('strategyEngineLoader', 'strategy-engine.js'); }
 function loadCloudSyncClient() { loadScriptOnce('cloudSyncLoader', 'cloud-sync.js'); }
+function loadRunnerStatusDashboard() { loadScriptOnce('runnerStatusLoader', 'runner-status.js'); }
 function enableAgentClient() {
-  loadMultiChartPanel();loadLevelsPanel();loadPaperTradeLoop();loadPaperTradePage();loadStrategyResearchEngine();loadCloudSyncClient();improveChatReadability();
+  loadMultiChartPanel();loadLevelsPanel();loadPaperTradeLoop();loadPaperTradePage();loadStrategyResearchEngine();loadCloudSyncClient();loadRunnerStatusDashboard();improveChatReadability();
   const form = document.getElementById('aiChatForm');const input = document.getElementById('aiChatInput');if (!form || !input) return;
   const bubble = ensureUsageBubble(form);const month = getMonthlyCost();bubble.textContent = '◔ $' + month.toFixed(2);bubble.title = '本月估算：$' + month.toFixed(2) + ' / $10';
   input.placeholder = '中文问 Jack AI...';const title = document.querySelector('.ai-chat-panel h3');if (title) title.textContent = '问 Jack AI';const first = document.querySelector('#chatBox .msg.ai');if (first) first.textContent = '中文 GPT Agent 已接入。直接用中文问我。';
