@@ -18,15 +18,14 @@
 
 - GitHub repository: `ploto55555/jack-ai-capital-os`
 - Default branch: `main`
-- Role: Project master documents, decision log, current status, checkpoints, research governance, and chat handovers.
+- Role: Project master documents, decision log, current status, checkpoints, research governance, source summaries, backtest results, and chat handovers.
 - Visibility at last check: **public**
 
-## Active Storage Mode
+## Active Storage Rule
 
-- `[ACTIVE]` Public Repository Safe Mode.
-- GitHub stores only non-sensitive code, sanitized decisions, high-level research status, redacted checkpoints, and continuity instructions.
-- Sensitive strategy rules, exact private parameters, capital information, account/broker details, personal journals, API keys, tokens, and private datasets must not be written to either public repository.
-- When a sensitive detail affects future work, the public checkpoint records that a protected detail exists without recording the value itself.
+- Project strategy rules, parameters, research results, checkpoints, and capital-path analysis may be stored in the repositories.
+- Do not commit passwords, API keys, access tokens, broker login credentials, or other authentication secrets.
+- GitHub remains the formal project source of truth; chat is a temporary working space.
 
 ## Architecture Status
 
@@ -36,35 +35,63 @@
 - `[DONE]` Setup promotion gate defined.
 - `[DONE]` Decision logging initialized.
 - `[DONE]` No-detail-loss and proactive chat-rotation protocol installed.
-- `[DONE]` Canonical existing code repository and branch identified.
-- `[DONE]` Public Repository Safe Mode adopted.
-- `[IN PROGRESS]` Audit and reconstruction of prior implementation details using sanitized documentation.
+- `[DONE]` Canonical code repository and branch identified.
+- `[DONE]` Abu source corpus received and reviewed.
+- `[DONE]` SRDC Episode I, II, and III corpus received and reviewed.
+- `[DONE]` Ketty FX source corpus received and reviewed.
+- `[DONE]` GBPJPY D1/H4/H1/M30/M15/M5/M1 data audited.
+- `[DONE]` Initial USD 500 to USD 100,000 baseline research completed.
+- `[DONE]` Ketty Regime Classifier V0.1 research completed.
+- `[IN PROGRESS]` Abu compression / new-space / objective-small-stop rule reconstruction.
 
 ## Verified Existing Code Areas
 
 The canonical code branch has verified files and runtime evidence for:
 
-- four-chart Jack Brain dashboard
-- live price and latest-candle endpoints
-- indicator overlay endpoints
-- trade-readiness analysis
-- dashboard memory snapshots
-- daily AI summary
-- MT5 read-only tick bridge support
-- FX M1 historical data download and inspection
-- M1 research backtest scripts
+- four-chart Jack Brain dashboard;
+- live price and latest-candle endpoints;
+- indicator overlay endpoints;
+- trade-readiness analysis;
+- dashboard memory snapshots;
+- daily AI summary;
+- MT5 read-only tick bridge support;
+- FX historical-data download and inspection;
+- M1 research backtest scripts;
+- Ketty regime and trend-breakout backtest V0.1.
 
-These items must be audited from the actual branch before changing UI, strategy logic, data handling, or risk behavior.
+## Current Research Findings
 
-## Current Research Status
+### SRDC baseline
 
-A GBPJPY M1 research backtest pipeline exists in the canonical code branch. Its present result is research evidence only and is not an approved production setup. Detailed validation, cost modelling, robustness testing, and promotion review are still required. Public documentation must not expose proprietary rules or sensitive parameters.
+- SRDC Episode I previous-day high/low breakout: rejected as a standalone baseline.
+- SRDC Episode III London-box breakout: very weak positive result only; watchlist status, not promotable.
+
+### Ketty Regime Classifier V0.1
+
+Retained research candidate:
+
+`KETTY_GBPJPY_TREND_BREAKOUT_V0.1`
+
+Full sample:
+
+- 1,246 trades;
+- Profit Factor 1.1385;
+- expectancy +0.1089R;
+- out-of-sample Profit Factor 1.0677;
+- no rolling 12-month window reached USD 100,000 from USD 500.
+
+Status:
+
+- `[RESEARCH_CANDIDATE]`
+- `[NOT APPROVED FOR PRODUCTION]`
+
+Ketty range mean reversion V0.1 and trend pullback V0.1 were rejected.
 
 ## Immediate Next Actions
 
-1. Treat `ploto55555/jack-quantdinger-lab` / `jack-personal-os-v1` as the current code source of truth.
-2. Audit the branch structure, key dashboard files, research scripts, and latest commits.
-3. Import and audit the old Step 36.1 Interactive UI chat while redacting sensitive details from public GitHub records.
-4. Produce a verified implementation inventory and first sanitized code/research checkpoint.
-5. Keep sensitive values only in local/private storage or the active chat until a private storage location exists.
-6. Continue UI or strategy changes only after the inventory and rule reconciliation are complete.
+1. Reconstruct Abu compression, new-space, and objective-small-stop concepts into explicit testable rules.
+2. Keep Abu testing independent from Ketty and SRDC during the first pass.
+3. Build separate H4/H1 compression detection and M15/M5 entry models.
+4. Test high-R targets, non-overlapping positions, spread, and conservative same-bar handling.
+5. Compare in-sample, validation, out-of-sample, calendar-year, and rolling 12-month results.
+6. Only after independent Abu testing, compare Ketty regime classification as an optional filter.
