@@ -42,7 +42,8 @@
 - `[DONE]` GBPJPY D1/H4/H1/M30/M15/M5/M1 data audited.
 - `[DONE]` Initial USD 500 to USD 100,000 baseline research completed.
 - `[DONE]` Ketty Regime Classifier V0.1 research completed.
-- `[IN PROGRESS]` Abu compression / new-space / objective-small-stop rule reconstruction.
+- `[DONE]` Abu compression / new-space / objective-small-stop V0.1 completed.
+- `[IN PROGRESS]` Independent validation of the locked Abu V0.1 candidate.
 
 ## Verified Existing Code Areas
 
@@ -87,11 +88,57 @@ Status:
 
 Ketty range mean reversion V0.1 and trend pullback V0.1 were rejected.
 
+### Abu Compression / New Space / Small Stop V0.1
+
+Retained research candidate:
+
+`ABU_GBPJPY_H4_COMPRESSION_NEW_SPACE_V0.1`
+
+Locked rule summary:
+
+- previous 6 H4 bars form compression;
+- compression range <= 3.0 H4 ATR14;
+- H4 ATR14 <= H4 ATR50;
+- breakout closes beyond prior 30-H4-bar extreme;
+- breakout body >= 0.3 H4 ATR14;
+- enter next M15 open;
+- stop at H4 breakout candle open;
+- accept only 3-30 pip stops;
+- target 5R;
+- maximum hold 384 M15 bars;
+- one position at a time;
+- spread included.
+
+M15 result:
+
+- 34 trades;
+- win rate 26.47%;
+- Profit Factor 1.80;
+- expectancy +0.5882R;
+- total +20R;
+- observed max drawdown 7R;
+- positive expectancy in IS, validation, and OOS splits.
+
+M5 validation over available 2025-2026 data exactly matched the M15 result over the same dates: 14 trades and +10R.
+
+Important limitation:
+
+- 4,032 combinations were examined;
+- selected sample has only 34 trades;
+- bootstrap 95% expectancy interval includes a negative value;
+- no rolling 12-month window reached USD 100,000 from USD 500.
+
+Status:
+
+- `[RESEARCH_CANDIDATE]`
+- `[PROMISING_BUT_SMALL_SAMPLE]`
+- `[NOT APPROVED FOR PRODUCTION]`
+
 ## Immediate Next Actions
 
-1. Reconstruct Abu compression, new-space, and objective-small-stop concepts into explicit testable rules.
-2. Keep Abu testing independent from Ketty and SRDC during the first pass.
-3. Build separate H4/H1 compression detection and M15/M5 entry models.
-4. Test high-R targets, non-overlapping positions, spread, and conservative same-bar handling.
-5. Compare in-sample, validation, out-of-sample, calendar-year, and rolling 12-month results.
-6. Only after independent Abu testing, compare Ketty regime classification as an optional filter.
+1. Lock Abu V0.1 parameters; do not continue micro-optimizing the same GBPJPY M15 sample.
+2. Seek independent evidence using longer GBPJPY M15/M5 history or other pairs.
+3. Run a long-history H1 proxy with the same compression/new-space logic.
+4. Manually inspect all 34 candidate trades against the Abu source examples.
+5. Run walk-forward testing before any promotion review.
+6. Keep Ketty or SRDC filters out of Abu testing until independent Abu validation is complete.
