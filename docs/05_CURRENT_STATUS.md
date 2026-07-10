@@ -21,6 +21,13 @@
 - Role: Project master documents, decision log, current status, checkpoints, research governance, and chat handovers.
 - Visibility at last check: **public**
 
+## Active Storage Mode
+
+- `[ACTIVE]` Public Repository Safe Mode.
+- GitHub stores only non-sensitive code, sanitized decisions, high-level research status, redacted checkpoints, and continuity instructions.
+- Sensitive strategy rules, exact private parameters, capital information, account/broker details, personal journals, API keys, tokens, and private datasets must not be written to either public repository.
+- When a sensitive detail affects future work, the public checkpoint records that a protected detail exists without recording the value itself.
+
 ## Architecture Status
 
 - `[DONE]` Dual-system architecture defined.
@@ -30,8 +37,8 @@
 - `[DONE]` Decision logging initialized.
 - `[DONE]` No-detail-loss and proactive chat-rotation protocol installed.
 - `[DONE]` Canonical existing code repository and branch identified.
-- `[IN PROGRESS]` Audit and reconstruction of prior implementation details.
-- `[BLOCKED]` Sensitive strategy migration until relevant repositories are private.
+- `[DONE]` Public Repository Safe Mode adopted.
+- `[IN PROGRESS]` Audit and reconstruction of prior implementation details using sanitized documentation.
 
 ## Verified Existing Code Areas
 
@@ -51,13 +58,13 @@ These items must be audited from the actual branch before changing UI, strategy 
 
 ## Current Research Status
 
-A GBPJPY M1 research backtest pipeline exists in the canonical code branch. Its present result is research evidence only and is not an approved production setup. Detailed validation, cost modelling, robustness testing, and promotion review are still required.
+A GBPJPY M1 research backtest pipeline exists in the canonical code branch. Its present result is research evidence only and is not an approved production setup. Detailed validation, cost modelling, robustness testing, and promotion review are still required. Public documentation must not expose proprietary rules or sensitive parameters.
 
 ## Immediate Next Actions
 
 1. Treat `ploto55555/jack-quantdinger-lab` / `jack-personal-os-v1` as the current code source of truth.
-2. Make both repositories private before storing proprietary rules, capital details, journals, credentials, or sensitive backtest research.
-3. Audit the branch structure, key dashboard files, research scripts, and latest commits.
-4. Import and audit the old Step 36.1 Interactive UI chat.
-5. Produce a verified implementation inventory and first complete code/research checkpoint.
+2. Audit the branch structure, key dashboard files, research scripts, and latest commits.
+3. Import and audit the old Step 36.1 Interactive UI chat while redacting sensitive details from public GitHub records.
+4. Produce a verified implementation inventory and first sanitized code/research checkpoint.
+5. Keep sensitive values only in local/private storage or the active chat until a private storage location exists.
 6. Continue UI or strategy changes only after the inventory and rule reconciliation are complete.
