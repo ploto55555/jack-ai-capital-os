@@ -58,3 +58,12 @@ This file records formal project decisions. Decisions are append-only. A new dec
 - Status: `[CONFIRMED]`
 - Decision: `ploto55555/jack-ai-capital-os` is currently the project documentation, checkpoint, decision-log, and continuity repository. It is not the canonical existing application code repository.
 - Reason: Separating code source from project memory avoids overwriting or misidentifying the existing implementation.
+
+### DEC-008 — Public Repository Safe Mode
+
+- Date: 2026-07-10
+- Status: `[CONFIRMED]`
+- Decision: Keep the repositories public and operate under Public Repository Safe Mode. GitHub may store code structure, non-sensitive implementation status, sanitized decisions, redacted checkpoints, and general research methodology only.
+- Prohibited content: proprietary strategy rules, exact private parameters, account or broker information, capital balances, personal journals, credentials, API keys, tokens, private datasets, and any detail that could expose the user's trading edge or identity.
+- Storage rule: sensitive details stay in the active chat or local files unless the user later provides a private storage location. Public GitHub checkpoints must use placeholders or high-level descriptions.
+- Reason: The user chose not to change repository visibility, so continuity must continue without exposing sensitive information.
