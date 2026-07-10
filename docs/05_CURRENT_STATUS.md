@@ -6,139 +6,202 @@
 
 ## Repository Map
 
-### Canonical Existing Code
+### Canonical code
 
 - Local folder: `C:\Users\sneak\jack-capital-os-source`
-- GitHub repository: `ploto55555/jack-quantdinger-lab`
+- Repository: `ploto55555/jack-quantdinger-lab`
 - Working branch: `jack-personal-os-v1`
-- Role: Existing Capital OS application code, dashboard APIs, market-data support, MT5 read-only tick bridge, and research scripts.
-- Visibility at last check: **public**
 
-### Project Memory and Continuity
+### Project memory and continuity
 
-- GitHub repository: `ploto55555/jack-ai-capital-os`
-- Default branch: `main`
-- Role: Project master documents, decision log, current status, checkpoints, research governance, source summaries, backtest results, and chat handovers.
-- Visibility at last check: **public**
+- Repository: `ploto55555/jack-ai-capital-os`
+- Branch: `main`
+- GitHub is the formal source of truth; chat is a temporary working space.
+- Strategy rules, parameters, results, and capital-path analysis may be stored.
+- Never commit passwords, API keys, access tokens, broker logins, or other authentication secrets.
 
-## Active Storage Rule
+## Architecture
 
-- Project strategy rules, parameters, research results, checkpoints, and capital-path analysis may be stored in the repositories.
-- Do not commit passwords, API keys, access tokens, broker login credentials, or other authentication secrets.
-- GitHub remains the formal project source of truth; chat is a temporary working space.
+The project remains separated into:
 
-## Architecture Status
+1. **Jack AI Capital OS** — production decision support using only explicitly approved setups.
+2. **Jack Strategy Research Lab** — strategy reconstruction, backtesting, robustness testing, rejection, and validation.
 
-- `[DONE]` Dual-system architecture defined.
-- `[DONE]` Capital OS production boundary defined.
-- `[DONE]` Strategy Research Lab boundary defined.
-- `[DONE]` Setup promotion gate defined.
-- `[DONE]` Decision logging initialized.
-- `[DONE]` No-detail-loss and proactive chat-rotation protocol installed.
-- `[DONE]` Canonical code repository and branch identified.
-- `[DONE]` Abu source corpus received and reviewed.
-- `[DONE]` SRDC Episode I, II, and III corpus received and reviewed.
-- `[DONE]` Ketty FX source corpus received and reviewed.
+No research candidate may enter the Capital OS without an exact-version promotion review and explicit user approval.
+
+## Completed Source and Data Work
+
+- `[DONE]` Abu source corpus reviewed.
+- `[DONE]` SRDC Episodes I–III reviewed.
+- `[DONE]` Ketty FX corpus reviewed.
 - `[DONE]` GBPJPY D1/H4/H1/M30/M15/M5/M1 data audited.
-- `[DONE]` Initial USD 500 to USD 100,000 baseline research completed.
-- `[DONE]` Ketty Regime Classifier V0.1 research completed.
-- `[DONE]` Abu compression / new-space / objective-small-stop V0.1 completed.
-- `[IN PROGRESS]` Independent validation of the locked Abu V0.1 candidate.
+- `[DONE]` Spread-point field identified and included in current research.
 
-## Verified Existing Code Areas
+## Capital Path Target
 
-The canonical code branch has verified files and runtime evidence for:
+- Start: USD 500
+- Target: USD 100,000
+- Evaluation window: rolling 12 months
 
-- four-chart Jack Brain dashboard;
-- live price and latest-candle endpoints;
-- indicator overlay endpoints;
-- trade-readiness analysis;
-- dashboard memory snapshots;
-- daily AI summary;
-- MT5 read-only tick bridge support;
-- FX historical-data download and inspection;
-- M1 research backtest scripts;
-- Ketty regime and trend-breakout backtest V0.1.
+This is a research stress target, not a reason to force leverage or accept invalid execution assumptions.
 
-## Current Research Findings
+## Main Research Lines
 
-### SRDC baseline
+1. **Swing Trade — current priority**
+2. **Day Trade — later stage**
 
-- SRDC Episode I previous-day high/low breakout: rejected as a standalone baseline.
-- SRDC Episode III London-box breakout: very weak positive result only; watchlist status, not promotable.
+The current Swing objective is not to invent a new low-frequency system. Historical Regime V8/V9 outputs already showed enough apparent opportunity frequency. The unresolved work is to reconstruct a real, non-duplicated entry and exit engine.
 
-### Ketty Regime Classifier V0.1
+## Previous Findings
 
-Retained research candidate:
+### SRDC
 
-`KETTY_GBPJPY_TREND_BREAKOUT_V0.1`
+- Episode I previous-day high/low breakout: rejected standalone.
+- Episode III London-box breakout: weak watchlist only.
 
-Full sample:
+### Ketty V0.1
 
-- 1,246 trades;
-- Profit Factor 1.1385;
-- expectancy +0.1089R;
-- out-of-sample Profit Factor 1.0677;
-- no rolling 12-month window reached USD 100,000 from USD 500.
+Retained research candidate: `KETTY_GBPJPY_TREND_BREAKOUT_V0.1`
 
-Status:
+- 1,246 trades
+- PF 1.1385
+- expectancy +0.1089R
+- OOS PF 1.0677
+- no rolling 12-month USD 500 to USD 100,000 result
+- status: research-only
 
-- `[RESEARCH_CANDIDATE]`
-- `[NOT APPROVED FOR PRODUCTION]`
+### Abu Compression V0.1
 
-Ketty range mean reversion V0.1 and trend pullback V0.1 were rejected.
+Retained small-sample candidate: `ABU_GBPJPY_H4_COMPRESSION_NEW_SPACE_V0.1`
 
-### Abu Compression / New Space / Small Stop V0.1
+- 34 M15 trades
+- win rate 26.47%
+- PF 1.80
+- expectancy +0.5882R
+- total +20R
+- observed max drawdown 7R
+- M5 matched 14 trades and +10R over the same available dates
+- warning: 4,032 combinations and only 34 selected trades; confidence interval includes negative expectancy
+- status: promising but not approved
 
-Retained research candidate:
+### Swing preliminary candidate
 
-`ABU_GBPJPY_H4_COMPRESSION_NEW_SPACE_V0.1`
+`SWING_GBPJPY_COMPRESSION_RETEST_RUNNER_V0.1`
 
-Locked rule summary:
+- 163 trades
+- win rate 52.15%
+- PF 1.408
+- expectancy +0.193R
+- total +31.44R
+- total +1,320.55 pips
+- best trade +14.08R / +1,073.93 pips
 
-- previous 6 H4 bars form compression;
-- compression range <= 3.0 H4 ATR14;
-- H4 ATR14 <= H4 ATR50;
-- breakout closes beyond prior 30-H4-bar extreme;
-- breakout body >= 0.3 H4 ATR14;
-- enter next M15 open;
-- stop at H4 breakout candle open;
-- accept only 3-30 pip stops;
-- target 5R;
-- maximum hold 384 M15 bars;
-- one position at a time;
-- spread included.
+This candidate remains background evidence only. User direction returned the main research focus to the historical V8/V9 opportunity stream and its entry/exit problem.
 
-M15 result:
+## Historical V8/V9 Evidence
 
-- 34 trades;
-- win rate 26.47%;
-- Profit Factor 1.80;
-- expectancy +0.5882R;
-- total +20R;
-- observed max drawdown 7R;
-- positive expectancy in IS, validation, and OOS splits.
+Available File Library outputs include:
 
-M5 validation over available 2025-2026 data exactly matched the M15 result over the same dates: 14 trades and +10R.
+- `regime_v9_4_100k_trade_by_trade_all_models.csv`
+- `regime_v8_fib_sr_best_trades.csv`
+- `regime_v8_1_no_green_best_trades.csv`
+- `regime_v8_fib_sr_setup_summary.csv`
 
-Important limitation:
+Historical V8 summary:
 
-- 4,032 combinations were examined;
-- selected sample has only 34 trades;
-- bootstrap 95% expectancy interval includes a negative value;
-- no rolling 12-month window reached USD 100,000 from USD 500.
+- red pullback Fib/SR: 251 trades, +768.0 net pips, 45.82% win rate
+- blue pullback Fib/SR: 98 trades, +162.9 net pips, 36.73% win rate
+- green range sweep/SR: 25 trades, -26.6 net pips, 44.00% win rate
 
-Status:
+Important warning: V9.4 trade output contains repeated same-direction entries inside the same market movement. These cannot automatically be treated as independent trade campaigns or independent compounding events.
 
-- `[RESEARCH_CANDIDATE]`
-- `[PROMISING_BUT_SMALL_SAMPLE]`
-- `[NOT APPROVED FOR PRODUCTION]`
+## Latest Research: Regime V9 Naked Entry / Exit V0.1
 
-## Immediate Next Actions
+Status: `[REJECTED AS GENERIC RECONSTRUCTION]`
 
-1. Lock Abu V0.1 parameters; do not continue micro-optimizing the same GBPJPY M15 sample.
-2. Seek independent evidence using longer GBPJPY M15/M5 history or other pairs.
-3. Run a long-history H1 proxy with the same compression/new-space logic.
-4. Manually inspect all 34 candidate trades against the Abu source examples.
-5. Run walk-forward testing before any promotion review.
-6. Keep Ketty or SRDC filters out of Abu testing until independent Abu validation is complete.
+The exact V8/V9 signal generator was not found in the canonical GitHub branch. A generic objective reconstruction was therefore tested using H4 causal price-action direction, H1 naked signals, and M15 execution.
+
+### Entry families tested
+
+1. PA-A: first breakout retest
+2. PA-B: Fibonacci plus support/resistance reclaim
+3. PA-C: liquidity sweep and reclaim
+
+### Best PA-A result
+
+- 100 campaigns
+- about 25 campaigns/year
+- win rate 22.00%
+- PF 0.8462
+- expectancy -0.1200R
+- total -12R
+
+### Best PA-B result
+
+- 195 campaigns
+- about 48.75 campaigns/year
+- win rate 22.05%
+- PF 0.8487
+- expectancy -0.1179R
+- total -23R
+
+Entry-quality observations for PA-B:
+
+- 59.49% reached +0.5R
+- 42.56% reached +1R
+- 33.33% reached +1.5R
+- 28.21% reached +2R
+- 22.56% reached +3R
+
+The entries frequently moved partly in the intended direction but did not create enough edge to overcome full losses and costs.
+
+### Best PA-C result
+
+- 185 campaigns
+- win rate 12.97%
+- PF 0.6902
+- expectancy -0.2696R
+- total -49.88R
+
+Generic sweep/reclaim was rejected.
+
+### Runner exit research
+
+Profit locks, optional partial exits, and H1 structural trails were tested. Best result:
+
+- PA-A entry
+- lock +0.5R after reaching +0.75R
+- 25% partial at +2R
+- begin H1 12-bar structural trail at +2R
+- 101 campaigns
+- PF 0.6849
+- expectancy -0.1716R
+- total -17.33R
+- validation and OOS both negative
+
+Conclusion: exit optimization cannot repair a negative generic entry edge.
+
+## Current Formal Conclusion
+
+- Naked price action is not rejected.
+- Generic Fibonacci and generic support/resistance are insufficient.
+- Generic liquidity sweep is rejected.
+- The old V8/V9 advantage depended on exact regime state, scoring, timing, session logic, entry qualification, and/or repeated-entry treatment.
+- The next stage must use the exact historical V8/V9 opportunity stream or generator.
+
+## Immediate Next Action
+
+`REGIME_V9_EXACT_CAMPAIGN_RECONSTRUCTION_V0.2`
+
+1. Recover the complete raw V9.4 and V8 trade outputs or the original generator.
+2. Assign one `campaign_id` to each distinct market move.
+3. Merge repeated same-direction entries instead of counting them as separate opportunities.
+4. Preserve the original regime/opportunity timestamps.
+5. Compare first signal, first pullback, Fib/SR reclaim, M15 confirmation, and H1 confirmation.
+6. Fix the best entry before testing runner exits again.
+7. Do not evaluate the USD 500 to USD 100,000 path until duplicate treatment and execution are realistic.
+
+## Key Latest Files
+
+- `research/active/capital_path_500_to_100k_v0_1/REGIME_V9_NAKED_ENTRY_EXIT_V0_1_RESULTS.md`
+- `checkpoints/2026-07-10_naked-entry-exit-v0-1-007.md`
