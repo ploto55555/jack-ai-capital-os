@@ -44,3 +44,17 @@ This file records formal project decisions. Decisions are append-only. A new dec
 - Status: `[CONFIRMED]`
 - Decision: Sensitive strategy parameters, capital data, private trading records, credentials, and proprietary logic must not be committed while the repository is public.
 - Reason: Confidentiality and security.
+
+### DEC-006 — Canonical Code Repository and Branch
+
+- Date: 2026-07-10
+- Status: `[CONFIRMED]`
+- Decision: The local folder `jack-capital-os-source` maps to GitHub repository `ploto55555/jack-quantdinger-lab`, branch `jack-personal-os-v1`. This repository and branch are the canonical source for existing Capital OS code.
+- Reason: The local folder name is not the GitHub repository name. Future code audits must use the remote repository and exact branch rather than infer from the local folder name.
+
+### DEC-007 — Documentation Repository Role
+
+- Date: 2026-07-10
+- Status: `[CONFIRMED]`
+- Decision: `ploto55555/jack-ai-capital-os` is currently the project documentation, checkpoint, decision-log, and continuity repository. It is not the canonical existing application code repository.
+- Reason: Separating code source from project memory avoids overwriting or misidentifying the existing implementation.
