@@ -1,9 +1,10 @@
-name: Capital Path London Expansion V3
+name: Capital Path London Expansion V3.1
 
 on:
   pull_request:
     paths:
       - "scripts/research/capital_path_london_expansion_multi_engine_v3.py"
+      - "scripts/research/capital_path_london_expansion_v3_1_balanced.py"
       - ".github/workflows/capital-path-v3.yml"
   workflow_dispatch:
 
@@ -38,24 +39,24 @@ jobs:
             --output research_data/XAUUSD_M15.csv
           wc -l research_data/*.csv
 
-      - name: Run V3 causal multi-engine backtest
+      - name: Run V3.1 family-balanced causal backtest
         run: |
-          python scripts/research/capital_path_london_expansion_multi_engine_v3.py \
+          python scripts/research/capital_path_london_expansion_v3_1_balanced.py \
             --gbpjpy research_data/GBPJPY_M15.csv \
             --xauusd research_data/XAUUSD_M15.csv \
-            --outdir research_outputs/capital_path_v3
+            --outdir research_outputs/capital_path_v3_1
 
       - name: Show report
         if: always()
         run: |
-          test -f research_outputs/capital_path_v3/REPORT.md && \
-            cat research_outputs/capital_path_v3/REPORT.md || true
+          test -f research_outputs/capital_path_v3_1/REPORT.md && \
+            cat research_outputs/capital_path_v3_1/REPORT.md || true
 
-      - name: Upload V3 results
+      - name: Upload V3.1 results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: capital-path-v3-results
-          path: research_outputs/capital_path_v3
+          name: capital-path-v3-1-results
+          path: research_outputs/capital_path_v3_1
           if-no-files-found: warn
           retention-days: 30
