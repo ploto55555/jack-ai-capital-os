@@ -1,228 +1,238 @@
 # Latest Handover
 
 ## Date
+2026-07-11
 
-2026-07-10
+## Read First
+1. `docs/00_PROJECT_MEMORY_MASTER.md`
+2. `docs/00_PROJECT_MASTER.md`
+3. `docs/04_DECISION_LOG.md`
+4. `docs/05_CURRENT_STATUS.md`
+5. `docs/06_NO_DETAIL_LOSS_PROTOCOL.md`
+6. this file
+7. newest checkpoint under `checkpoints/`
+8. newest result under `research/active/capital_path_500_to_100k_v0_1/`
 
 ## Project Architecture
+1. **Jack AI Capital OS** — production decision support using only explicitly approved setup versions.
+2. **Jack Strategy Research Lab** — reconstruction, causal backtesting, robustness testing, rejection, validation, and promotion review.
 
-1. **Jack AI Capital OS** — production decision support using only explicitly approved setups.
-2. **Jack Strategy Research Lab** — reconstruction, backtesting, robustness testing, rejection, and validation.
-
-No setup enters production without a documented promotion review and explicit approval of the exact version.
+No setup enters production without exact version documentation and explicit user approval.
 
 ## Repository Mapping
-
 - Local folder: `C:\Users\sneak\jack-capital-os-source`
 - Code repository: `ploto55555/jack-quantdinger-lab`
 - Working branch: `jack-personal-os-v1`
 - Documentation repository: `ploto55555/jack-ai-capital-os`
 - Documentation branch: `main`
 
-GitHub is the continuity source of truth. Do not commit credentials, tokens, API keys, or broker logins.
+GitHub is the continuity source of truth. Never commit credentials, API keys, broker passwords, or private tokens.
 
-## Completed Corpora and Data
+## User Operating Rules
+- Reply in Chinese unless the user explicitly asks otherwise.
+- Explain technical steps for a beginner.
+- Do not modify code/GitHub/deployment unless the user says `执行`.
+- Personal research support only; no automatic order execution in the current phase.
+- Do not call conceptual analysis a completed backtest.
+- Label every setup honestly: proxy, candidate, rejected, or approved.
 
-- Abu six-file corpus reviewed.
-- SRDC Episodes I–III reviewed.
-- Ketty FX corpus reviewed.
-- GBPJPY D1/H4/H1/M30/M15/M5/M1 data audited.
-- Spread-point field identified and used in current research.
-
-Data coverage:
-
+## Data Status
+GBPJPY data audited:
 - D1/H4/H1: 2010-06-24 to 2026-07-08
 - M30: 2018-06-29 to 2026-07-08
 - M15: 2022-07-04 to 2026-07-08
 - M5: 2025-03-06 to 2026-07-08
 - M1: 2026-04-01 to 2026-07-08
 
-## Capital Path Goal
+True schema:
+`Time, Open, High, Low, Close, TickVolume, SpreadPoints`
 
+## Capital Path Objective
 - Start: USD 500
 - Target: USD 100,000
 - Window: rolling 12 months
 
-This is a research stress target. It must not be achieved by unrealistic duplicate entries, execution assumptions, or forced risk.
+This is an extreme research target, not a promise. It cannot be accepted if achieved through duplicate entries, look-ahead, unrealistic costs, or ruin-level risk.
 
-## Research Direction Override
+## Current Research Priority
+1. Swing Trade now
+2. Day Trade later
 
-The user established two lines:
+Preferred Swing logic:
+- Weekly/Daily/H4 structure
+- Fibonacci
+- Support/Resistance
+- Price Action confirmation
+- first clean pullback or breakout/retest
+- structural invalidation Stop
+- available-space / risk-value calculation
+- profit protection followed by Runner management
 
-1. **Swing Trade — current priority**
-2. **Day Trade — later**
+The user expects real Swing winners of 50 pips minimum, with strong waves reaching several hundred pips. Stop placement must be based on value and market invalidation, not artificially tightened to manufacture high R.
 
-The main Swing task is not to replace Regime V8/V9 with a new low-frequency strategy. Historical V8/V9 outputs already showed sufficient apparent opportunity frequency and a historical USD 500 to USD 100,000 path. The unresolved issue is finding a realistic entry and exit.
-
-The preferred entry language is naked price action:
-
-- market structure;
-- support/resistance;
-- objective Fibonacci pullback;
-- breakout/retest;
-- sweep/reclaim;
-- structural invalidation;
-- profit lock followed by runner management.
-
-## Important Historical Evidence
-
-File Library contains:
-
+## Historical V8 / V9 Evidence
+Important historical files:
 - `regime_v9_4_100k_trade_by_trade_all_models.csv`
 - `regime_v8_fib_sr_best_trades.csv`
 - `regime_v8_1_no_green_best_trades.csv`
 - `regime_v8_fib_sr_setup_summary.csv`
 - `old chat full.html`
 
-Historical V8 summary:
+V8 summary:
+- red pullback Fib/SR: 251 trades, +768.0 pips, 45.82% win rate
+- blue pullback Fib/SR: 98 trades, +162.9 pips, 36.73% win rate
+- green range sweep/SR: 25 trades, -26.6 pips, 44.00% win rate
 
-- red pullback Fib/SR: 251 trades, +768.0 net pips, 45.82% win rate;
-- blue pullback Fib/SR: 98 trades, +162.9 net pips, 36.73% win rate;
-- green range sweep/SR: 25 trades, -26.6 net pips, 44.00% win rate.
+V9.4 contains repeated same-direction entries in the same market move. These must be merged into independent Campaigns before compounding is accepted.
 
-The V9.4 output contains many repeated same-direction entries during the same market move. These repeated entries must not automatically count as separate campaigns or independent compounding events.
+The exact original V8/V9 generator has not been recovered in the canonical code repository.
 
-The exact V8/V9 Python generator was not found in the canonical GitHub branch.
+## Completed Evidence
+### SRDC Episode I
+Rejected standalone:
+- 995 trades
+- PF 0.9568
+- expectancy -0.0157R
 
-## Latest Completed Test
+### SRDC Episode III
+Weak watchlist only:
+- 734 trades
+- PF 1.0238
+- expectancy +0.0083R
 
-Research version:
-
-`REGIME_V9_NAKED_ENTRY_EXIT_V0.1`
-
-Formal status:
-
-`[REJECTED AS GENERIC RECONSTRUCTION]`
-
-Because the exact V8/V9 generator was missing, the test used a causal H4 price-action direction proxy, H1 naked signals, and M15 execution.
-
-### Generic entry results
-
-PA-A first breakout retest:
-
-- 100 campaigns;
-- about 25/year;
-- PF 0.8462;
-- expectancy -0.1200R;
-- total -12R.
-
-PA-B Fibonacci + support/resistance reclaim:
-
-- 195 campaigns;
-- about 48.75/year;
-- PF 0.8487;
-- expectancy -0.1179R;
-- total -23R.
-
-PA-C liquidity sweep + reclaim:
-
-- 185 campaigns;
-- PF 0.6902;
-- expectancy -0.2696R;
-- total -49.88R.
-
-### Generic exit result
-
-Best tested runner exit:
-
-- PA-A entry;
-- lock +0.5R after +0.75R;
-- 25% partial at +2R;
-- H1 12-bar structural trail after +2R;
-- 101 campaigns;
-- PF 0.6849;
-- expectancy -0.1716R;
-- validation and OOS negative.
-
-Conclusion:
-
-- naked price action itself is not rejected;
-- generic Fib/SR is insufficient;
-- generic sweep/reclaim is rejected;
-- exit optimization cannot repair a negative entry edge;
-- the old V8/V9 advantage depended on exact regime state, scoring, timing, session logic, entry qualification, and/or repeated-entry handling.
-
-## Previous Research Candidates Still on Record
-
-### Ketty
-
+### Ketty Candidate
 `KETTY_GBPJPY_TREND_BREAKOUT_V0.1`
-
 - 1,246 trades
 - PF 1.1385
 - expectancy +0.1089R
-- research-only
+- research only
 
-### Abu
-
+### Abu Candidate
 `ABU_GBPJPY_H4_COMPRESSION_NEW_SPACE_V0.1`
-
 - 34 trades
 - PF 1.80
 - expectancy +0.5882R
 - +20R
-- promising but too small after 4,032 tested combinations
+- promising but statistically too small after 4,032 combinations
 
-### Swing preliminary
+### Generic Naked Reconstruction
+`REGIME_V9_NAKED_ENTRY_EXIT_V0.1`
+Status: rejected as generic proxy reconstruction.
+- PA-A first retest: PF 0.8462
+- PA-B Fib/SR: PF 0.8487
+- PA-C sweep/reclaim: PF 0.6902
+- exit optimization did not repair negative entry expectancy
 
-`SWING_GBPJPY_COMPRESSION_RETEST_RUNNER_V0.1`
+### Dual Engine V0.9
+Fib/SR + trend-breakout:
+- 138 independent M15 Campaigns
+- about 34/year
+- 55.80% profitable Campaigns
+- PF 1.290
+- +1,028.53 pips
+- positive OOS but weak in some years
+- did not achieve USD 500 to USD 100,000
 
-- 163 trades
-- win rate 52.15%
-- PF 1.408
-- expectancy +0.193R
-- +1,320.55 pips
-- best trade +1,073.93 pips
+### Fib/SR Big Swing
+- 30 Campaigns
+- 30% win rate
+- PF 2.03
+- +1,136.94 pips
+- low frequency and profits concentrated in few large winners
 
-These remain research evidence but are not the active priority.
+### Fixed 50–150 Pip Portfolio
+- 152 Campaigns
+- about 37.9/year
+- profitable Campaigns 30.92%
+- PF 1.266
+- +1,157.10 pips
+- did not meet win-rate or capital objective
+
+## Latest Completed Test
+Research version:
+`FIB_SR_PA_VALUE_STOP_V1`
+
+Formal status:
+`[REJECTED FOR THE STATED TARGET]`
+
+Search:
+- 672 controlled Stop/Exit combinations
+- structural Stop multipliers: 0.8 / 1.0 / 1.2 / 1.5
+- available room: 2R / 3R / 5R / 8R
+- fixed exits: 50 / 75 / 100 / 150 / 200 / 300 pips
+- Runner start: 2R / 3R / 5R
+- M15 structural trails: 24 / 48 / 96 bars
+- optional break-even or profit lock
+- one open Campaign at a time
+- conservative stop-first intrabar assumption
+
+Best stable candidate:
+`run5_b48_lock(2, 0)_sm0.8_room2`
+
+Results:
+- 129 independent Campaigns
+- 32.29/year
+- win rate 17.83%
+- PF 1.559
+- expectancy +0.329R
+- total +42.50R
+- net +1,626.14 pips
+- average winner +221.73 pips
+- median winner +187.30 pips
+- largest winner +592 pips
+
+Capital result:
+- no fixed risk between 1% and 20% reached USD 100,000 in any rolling 12-month window
+- 20% risk best rolling 12-month capital: about USD 2,421.85
+- drawdown near 94.4%
+
+Conclusion:
+The setup can capture 200–600 pip Swing waves, but frequency, win rate, capital growth, and drawdown fail the user's target.
+
+Key result file:
+- `research/active/capital_path_500_to_100k_v0_1/FIB_SR_PA_VALUE_STOP_V1_RESULTS.md`
+
+## Current Truth
+No tested setup has yet passed all of these requirements:
+- at least 40 independent Campaigns/year
+- consistently high win rate
+- several thousand net pips/year
+- USD 500 to USD 100,000 in rolling 12 months
+- acceptable drawdown
+
+Do not claim success or silently lower the target.
 
 ## Active Next Stage
-
 `REGIME_V9_EXACT_CAMPAIGN_RECONSTRUCTION_V0.2`
 
-Required sequence:
-
-1. Obtain complete raw bytes of the V9.4 and V8 output CSVs, or recover the original generator.
-2. Assign a `campaign_id` to each distinct market move.
-3. Merge repeated same-direction entries.
-4. Preserve original regime and opportunity timing.
-5. Compare entry choices on the same opportunities:
-   - first signal;
-   - first clean pullback;
-   - objective Fib/SR reclaim;
-   - M15 confirmation;
-   - H1 confirmation.
-6. Fix the entry stream before testing exits again.
-7. Test lock-and-runner exits only after entry validation.
-8. Recalculate the USD 500 to USD 100,000 path using realistic independent campaigns.
-
-## Required Files in the Active Compute Session
-
-The File Library allows reading and citation, but the current compute environment may not expose complete CSV bytes. For exact computation, re-upload only these files into the active chat when needed:
-
+Required files in the active compute session:
 - `regime_v9_4_100k_trade_by_trade_all_models.csv`
 - `regime_v8_1_no_green_best_trades.csv` or `regime_v8_fib_sr_best_trades.csv`
-- the original V8/V9 Python generator, when available
+- original V8/V9 generator if available
 
-Other source documents do not need to be re-uploaded.
+Required sequence:
+1. Remove duplicate risk-model copies.
+2. Assign one `campaign_id` per distinct market move.
+3. Preserve original Regime opportunity timing.
+4. Compare first signal, first clean pullback, Fib/SR reclaim, M15 confirmation, and H1 confirmation on the same Campaigns.
+5. Freeze the entry stream.
+6. Test structural Stop value alternatives.
+7. Test lock-and-Runner exits.
+8. Recalculate rolling 12-month capital using realistic independent Campaigns.
 
-## Key Latest Files
+## ChatGPT Export Continuity
+On 2026-07-11 the user uploaded a ChatGPT export containing about 800 parsed conversations plus a large `chat.html`.
 
-- `research/active/capital_path_500_to_100k_v0_1/REGIME_V9_NAKED_ENTRY_EXIT_V0_1_RESULTS.md`
-- `checkpoints/2026-07-10_naked-entry-exit-v0-1-007.md`
-- `docs/05_CURRENT_STATUS.md`
+The raw export was not committed because it is large and may contain private attachments. Curated continuity files were created instead:
+- `docs/00_PROJECT_MEMORY_MASTER.md`
+- `archive/chatgpt_export_2026-07-11/README.md`
+- `archive/chatgpt_export_2026-07-11/RELEVANT_CONVERSATION_INDEX.md`
 
-## New-Chat Startup
-
-Read in order:
-
-1. `docs/00_PROJECT_MASTER.md`
-2. `docs/04_DECISION_LOG.md`
-3. `docs/05_CURRENT_STATUS.md`
-4. `docs/06_NO_DETAIL_LOSS_PROTOCOL.md`
-5. `docs/99_LATEST_HANDOVER.md`
-6. `checkpoints/2026-07-10_naked-entry-exit-v0-1-007.md`
-7. `research/active/capital_path_500_to_100k_v0_1/REGIME_V9_NAKED_ENTRY_EXIT_V0_1_RESULTS.md`
-8. canonical code branch `jack-personal-os-v1`
-
-Then report the active research version, exact missing raw inputs, duplicate-campaign rule, latest evidence, and next computation step.
+## New-Chat Startup Response
+After reading the required files, the assistant must report:
+- active research version;
+- latest rejected/accepted evidence;
+- exact missing raw inputs;
+- duplicate-Campaign rule;
+- next computation step;
+- whether the user has said `执行`.
