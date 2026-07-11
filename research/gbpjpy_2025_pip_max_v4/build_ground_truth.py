@@ -22,12 +22,24 @@ def load_histdata(zip_path: Path) -> pd.DataFrame:
     )
     frame = frame.set_index("timestamp").sort_index()
 
-    if frame.index.has_duplicates:
-        raise ValueError("Duplicate M1 timestamps found")
+    duplicate_rows = int(frame.reset_index().duplicated().sum())
+    duplicate_timestamp_rows = int(frame.index.duplicated(keep=False).sum())
+    if duplicate_timestamp_rows:
+        duplicated = frame[frame.index.duplicated(keep=False)]
+        conflicting = duplicated.groupby(level=0).nunique().max(axis=1) > 1
+        if conflicting.any():
+            raise ValueError("Conflicting duplicate M1 timestamps found")
+        frame = frame[~frame.index.duplicated(keep="first")]
+
+    frame.attrs["exact_duplicate_rows_removed"] = duplicate_rows
+    frame.attrs["duplicate_timestamp_rows_found"] = duplicate_timestamp_rows
+
     if frame[["open", "high", "low", "close"]].isna().any().any():
         raise ValueError("Missing OHLC values found")
-    if not ((frame["high"] >= frame[["open", "close", "low"]].max(axis=1)) &
-            (frame["low"] <= frame[["open", "close", "high"]].min(axis=1))).all():
+    if not (
+        (frame["high"] >= frame[["open", "close", "low"]].max(axis=1))
+        & (frame["low"] <= frame[["open", "close", "high"]].min(axis=1))
+    ).all():
         raise ValueError("Invalid OHLC geometry found")
 
     return frame[["open", "high", "low", "close", "volume"]]
@@ -54,13 +66,23 @@ def main() -> None:
     m1 = load_histdata(args.zip_path)
 
     summary = pd.DataFrame(
-        [{
-            "m1_rows": len(m1),
-            "first_timestamp": m1.index.min(),
-            "last_timestamp": m1.index.max(),
-            "duplicate_timestamps": int(m1.index.duplicated().sum()),
-            "missing_ohlc_rows": int(m1[["open", "high", "low", "close"]].isna().any(axis=1).sum()),
-        }]
+        [
+            {
+                "m1_rows": len(m1),
+                "first_timestamp": m1.index.min(),
+                "last_timestamp": m1.index.max(),
+                "duplicate_timestamp_rows_found": int(
+                    m1.attrs.get("duplicate_timestamp_rows_found", 0)
+                ),
+                "exact_duplicate_rows_removed": int(
+                    m1.attrs.get("exact_duplicate_rows_removed", 0)
+                ),
+                "duplicate_timestamps_after_clean": int(m1.index.duplicated().sum()),
+                "missing_ohlc_rows": int(
+                    m1[["open", "high", "low", "close"]].isna().any(axis=1).sum()
+                ),
+            }
+        ]
     )
     summary.to_csv(args.output / "data_quality_summary.csv", index=False)
 
