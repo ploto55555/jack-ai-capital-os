@@ -1,0 +1,61 @@
+name: Old 500 to 100k V2 Research
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/old_500_to_100k_edge_reconstruction_v2.py"
+      - ".github/workflows/old-500-to-100k-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  causal-backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install research dependencies
+        run: python -m pip install --upgrade pip pandas numpy
+
+      - name: Download public M15 research data
+        run: |
+          mkdir -p research_data
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/ejtraderLabs/historical-data/main/GBPJPY/GBPJPYm15.csv" \
+            --output research_data/GBPJPY_M15.csv
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/ejtraderLabs/historical-data/main/XAUUSD/XAUUSDm15.csv" \
+            --output research_data/XAUUSD_M15.csv
+          wc -l research_data/*.csv
+
+      - name: Run causal V2 backtest
+        run: |
+          python scripts/research/old_500_to_100k_edge_reconstruction_v2.py \
+            --gbpjpy research_data/GBPJPY_M15.csv \
+            --xauusd research_data/XAUUSD_M15.csv \
+            --outdir research_outputs/old_500_to_100k_v2
+
+      - name: Show report
+        if: always()
+        run: |
+          test -f research_outputs/old_500_to_100k_v2/REPORT.md && \
+            cat research_outputs/old_500_to_100k_v2/REPORT.md || true
+
+      - name: Upload research results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: old-500-to-100k-v2-results
+          path: research_outputs/old_500_to_100k_v2
+          if-no-files-found: warn
+          retention-days: 30

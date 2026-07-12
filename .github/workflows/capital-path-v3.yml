@@ -1,0 +1,62 @@
+name: Capital Path London Expansion V3.1
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/capital_path_london_expansion_multi_engine_v3.py"
+      - "scripts/research/capital_path_london_expansion_v3_1_balanced.py"
+      - ".github/workflows/capital-path-v3.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v3-causal-backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy
+
+      - name: Download public M15 research data
+        run: |
+          mkdir -p research_data
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/ejtraderLabs/historical-data/main/GBPJPY/GBPJPYm15.csv" \
+            --output research_data/GBPJPY_M15.csv
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/ejtraderLabs/historical-data/main/XAUUSD/XAUUSDm15.csv" \
+            --output research_data/XAUUSD_M15.csv
+          wc -l research_data/*.csv
+
+      - name: Run V3.1 family-balanced causal backtest
+        run: |
+          python scripts/research/capital_path_london_expansion_v3_1_balanced.py \
+            --gbpjpy research_data/GBPJPY_M15.csv \
+            --xauusd research_data/XAUUSD_M15.csv \
+            --outdir research_outputs/capital_path_v3_1
+
+      - name: Show report
+        if: always()
+        run: |
+          test -f research_outputs/capital_path_v3_1/REPORT.md && \
+            cat research_outputs/capital_path_v3_1/REPORT.md || true
+
+      - name: Upload V3.1 results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capital-path-v3-1-results
+          path: research_outputs/capital_path_v3_1
+          if-no-files-found: warn
+          retention-days: 30

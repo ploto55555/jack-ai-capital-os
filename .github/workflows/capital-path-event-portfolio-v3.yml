@@ -1,0 +1,63 @@
+name: Capital Path Event Portfolio V3
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/capital_path_event_portfolio_v3.py"
+      - ".github/workflows/capital-path-event-portfolio-v3.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  causal-multi-symbol-backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy
+
+      - name: Download public M15 research data
+        run: |
+          mkdir -p research_data
+          for s in GBPJPY XAUUSD USDJPY GBPUSD EURUSD; do
+            curl --fail --location --retry 3 \
+              "https://raw.githubusercontent.com/ejtraderLabs/historical-data/main/$s/${s}m15.csv" \
+              --output "research_data/${s}_M15.csv"
+          done
+          wc -l research_data/*.csv
+
+      - name: Run V3 event portfolio
+        run: |
+          python scripts/research/capital_path_event_portfolio_v3.py \
+            --gbpjpy research_data/GBPJPY_M15.csv \
+            --xauusd research_data/XAUUSD_M15.csv \
+            --usdjpy research_data/USDJPY_M15.csv \
+            --gbpusd research_data/GBPUSD_M15.csv \
+            --eurusd research_data/EURUSD_M15.csv \
+            --outdir research_outputs/capital_path_event_portfolio_v3
+
+      - name: Show report
+        if: always()
+        run: |
+          test -f research_outputs/capital_path_event_portfolio_v3/REPORT.md && \
+            cat research_outputs/capital_path_event_portfolio_v3/REPORT.md || true
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capital-path-event-portfolio-v3-results
+          path: research_outputs/capital_path_event_portfolio_v3
+          if-no-files-found: warn
+          retention-days: 30

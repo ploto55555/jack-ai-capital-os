@@ -1,0 +1,57 @@
+name: GBPJPY Range Expansion V1
+
+on:
+  pull_request:
+    paths:
+      - "scripts/research/gbpjpy_range_to_expansion_v1.py"
+      - ".github/workflows/gbpjpy-range-expansion-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy tabulate
+
+      - name: Download GBPJPY M15 research data
+        run: |
+          mkdir -p research_data
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/ejtraderLabs/historical-data/main/GBPJPY/GBPJPYm15.csv" \
+            --output research_data/GBPJPY_M15.csv
+          wc -l research_data/GBPJPY_M15.csv
+
+      - name: Run GBPJPY range-to-expansion V1
+        run: |
+          python scripts/research/gbpjpy_range_to_expansion_v1.py \
+            --m15 research_data/GBPJPY_M15.csv \
+            --outdir research_outputs/gbpjpy_range_expansion_v1
+
+      - name: Show report
+        if: always()
+        run: |
+          test -f research_outputs/gbpjpy_range_expansion_v1/REPORT.md && \
+            cat research_outputs/gbpjpy_range_expansion_v1/REPORT.md || true
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gbpjpy-range-expansion-v1-results
+          path: research_outputs/gbpjpy_range_expansion_v1
+          if-no-files-found: warn
+          retention-days: 30
